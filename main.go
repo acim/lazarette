@@ -1,8 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 )
 
 type intercept404 struct {
@@ -43,8 +48,24 @@ func spaFileServeFunc(dir string) func(http.ResponseWriter, *http.Request) {
 
 func main() {
 	http.HandleFunc("/volumes", func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(`{"data": {"volumes": ["vol1", "vol2"]}}`))
+
+		config, err := rest.InClusterConfig()
+		if err != nil {
+			panic(err.Error())
+		}
+		// creates the clientset
+		clientset, err := kubernetes.NewForConfig(config)
+		if err != nil {
+			panic(err.Error())
+		}
+		pvs, err := clientset.CoreV1().PersistentVolumes().List(ctx, metav1.ListOptions{})
+		if err != nil {
+			panic(err.Error())
+		}
+		fmt.Printf("There are %d pods in the cluster\n", len(pvs.Items))
 	})
 	http.HandleFunc("/", spaFileServeFunc("public"))
 
