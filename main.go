@@ -42,6 +42,10 @@ func spaFileServeFunc(dir string) func(http.ResponseWriter, *http.Request) {
 }
 
 func main() {
+	http.HandleFunc("/volumes", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(`{"data": {"volumes": ["vol1", "vol2"]}}`))
+	})
 	http.HandleFunc("/", spaFileServeFunc("public"))
 
 	log.Fatal(http.ListenAndServe(":3000", nil))
