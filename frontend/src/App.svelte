@@ -2,7 +2,7 @@
   <p>loading</p>
 {:then data}
   {#each data.data.volumes as volume}
-    <li>{volume}</li>
+    <li>{volume.metadata.name}</li>
   {/each}
 {:catch error}
   <p style="color: red">{error.message}</p>

@@ -1,10 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
@@ -50,7 +52,6 @@ func main() {
 	http.HandleFunc("/volumes", func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(`{"data": {"volumes": ["vol1", "vol2"]}}`))
 
 		config, err := rest.InClusterConfig()
 		if err != nil {
@@ -66,8 +67,26 @@ func main() {
 			panic(err.Error())
 		}
 		fmt.Printf("There are %d pods in the cluster\n", len(pvs.Items))
+		d := data{
+			Volumes: pvs.Items,
+		}
+		res, err := json.Marshal(d)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		w.Write(res)
 	})
 	http.HandleFunc("/", spaFileServeFunc("public"))
 
 	log.Fatal(http.ListenAndServe(":3000", nil))
+}
+
+type data struct {
+	e
+	Volumes []v1.PersistentVolume `json:"volumes"`
+}
+
+type res struct {
+	Data data `json:"data"`
 }
