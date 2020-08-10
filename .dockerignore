@@ -1,0 +1,7 @@
+.dockerignore
+.gitignore
+.vscode
+LICENCE
+README.md
+frontend/node_modules
+frontend/public/build
