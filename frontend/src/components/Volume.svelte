@@ -1,9 +1,12 @@
 <script lang="ts">
   import type * as k8s from "@kubernetes/client-node";
   import { volume } from "../store";
+
+  $: console.log($volume);
+  $: console.log(volume);
 </script>
 
-{#if $volume !== null}
+{#if $volume}
   <ul>
     <li>Storage class: {$volume.spec.storageClassName}</li>
     <li>Reclaim policy: {$volume.spec.persistentVolumeReclaimPolicy}</li>
