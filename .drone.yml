@@ -4,15 +4,16 @@ type: kubernetes
 name: default
 
 steps:
-  - name: lint-go
-    image: golangci/golangci-lint:latest-alpine
-    commands:
-      - golangci-lint run --enable-all
-  - name: lint-svelte
-    image: mhart/alpine-node:14
-    commands:
-      - cd frontend
-      - npm run validate
+  # - name: lint-go
+  #   image: golangci/golangci-lint:latest-alpine
+  #   commands:
+  #     - golangci-lint run --allow-parallel-runners --skip-dirs frontend --enable-all
+  # - name: lint-svelte
+  #   image: mhart/alpine-node:14
+  #   commands:
+  #     - cd frontend
+  #     - npm ci
+  #     - npm run validate
   - name: tag
     image: busybox
     commands:
