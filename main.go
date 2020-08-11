@@ -83,7 +83,6 @@ func main() {
 }
 
 type data struct {
-	e
 	Volumes []v1.PersistentVolume `json:"volumes"`
 }
 

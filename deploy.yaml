@@ -33,7 +33,7 @@ subjects:
   name: kve
   namespace: default
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kve
