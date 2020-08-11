@@ -1,5 +1,5 @@
-@import url(//fonts.googleapis.com/css2?family=Lato&display=swap);
-@import url(//unpkg.com/modern-normalize@0.7.0/modern-normalize.css);
+@import url(https://fonts.googleapis.com/css2?family=Lato&display=swap);
+@import url(https://unpkg.com/modern-normalize@0.7.0/modern-normalize.css);
 
 :root {
   --bg-color: #000;
@@ -24,6 +24,7 @@ body {
   height: 100vh;
   max-width: 1140px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-rendering: optimizeLegibility;
