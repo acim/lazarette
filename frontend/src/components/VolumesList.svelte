@@ -1,22 +1,12 @@
 <script type="ts">
   import type * as k8s from "@kubernetes/client-node";
+  import { get } from "../fetch";
 
-  interface HttpResponse<T> extends Response {
-    parsedBody?: T;
-  }
-
-  const promise = http<k8s.V1PersistentVolume[]>("/volumes");
-
-  async function http<T>(request: RequestInfo): Promise<HttpResponse<T>> {
-    const response: HttpResponse<T> = await fetch(request);
-
-    response.parsedBody = await response.json();
-    return response;
-  }
+  const promise = get<k8s.V1PersistentVolume[]>("/volumes");
 </script>
 
 {#await promise}
-  <p>loading</p>
+  <p>loading...</p>
 {:then response}
   <ul>
     {#each response.parsedBody as volume}
@@ -24,5 +14,5 @@
     {/each}
   </ul>
 {:catch error}
-  <p style="color: red">{error.message}</p>
+  <p class="text-error">{error.message}</p>
 {/await}

@@ -2,9 +2,10 @@
 @import url(//unpkg.com/modern-normalize@0.7.0/modern-normalize.css);
 
 :root {
-  --bg-color: #000;
-  --color: #f5f5f5;
-  --accent-color: #ec407a;
+  --color-background: #000;
+  --color-primary: #f5f5f5;
+  --color-accent: #ec407a;
+  --color-error: red;
 }
 
 html {
@@ -19,8 +20,9 @@ html {
 
 body {
   font-family: "Lato", sans-serif;
-  background-color: var(--bg-color);
-  color: var(--color);
+  line-height: 1.4;
+  background-color: var(--color-background);
+  color: var(--color-primary);
   height: 100vh;
   max-width: 1140px;
   margin: 0 auto;
@@ -38,4 +40,14 @@ h4,
 h5,
 h6 {
   color: var(--accent-color);
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.text-error {
+    color: var(--color-error);
 }
