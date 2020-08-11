@@ -1,7 +1,7 @@
 {#await fetchData()}
   <p>loading</p>
 {:then data}
-  {#each data.data.volumes as volume}
+  {#each data.volumes as volume}
     <li>{volume.metadata.name}</li>
   {/each}
 {:catch error}
