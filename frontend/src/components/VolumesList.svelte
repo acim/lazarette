@@ -1,6 +1,7 @@
 <script type="ts">
   import type * as k8s from "@kubernetes/client-node";
   import { get } from "../fetch";
+  import { volume } from "../store";
 
   const promise = get<k8s.V1PersistentVolume[]>("/volumes");
 </script>
@@ -9,8 +10,13 @@
   <p>loading...</p>
 {:then response}
   <ul>
-    {#each response.parsedBody as volume}
-      <li>{volume.metadata.name}</li>
+    {#each response.parsedBody as vol}
+      <li
+        on:click={() => {
+          $volume = vol;
+        }}>
+        {vol.metadata.name}
+      </li>
     {/each}
   </ul>
 {:catch error}
