@@ -15,6 +15,7 @@
   }
 </script>
 
+<h1>kubernetes Volumes Explorer</h1>
 {#await fetchData()}
   <p>loading</p>
 {:then data}
