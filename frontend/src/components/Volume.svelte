@@ -3,7 +3,6 @@
   import { volume } from "../store";
 
   $: console.log($volume);
-  $: console.log(volume);
 </script>
 
 {#if $volume}

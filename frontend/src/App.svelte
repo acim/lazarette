@@ -13,4 +13,5 @@
 <Header />
 <main>
   <VolumesList />
+  <Volume />
 </main>
