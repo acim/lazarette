@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 
-	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
@@ -67,10 +66,7 @@ func main() {
 			panic(err.Error())
 		}
 		fmt.Printf("There are %d pods in the cluster\n", len(pvs.Items))
-		d := data{
-			Volumes: pvs.Items,
-		}
-		res, err := json.Marshal(d)
+		res, err := json.Marshal(pvs.Items)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -80,8 +76,4 @@ func main() {
 	http.HandleFunc("/", spaFileServeFunc("public"))
 
 	log.Fatal(http.ListenAndServe(":3000", nil))
-}
-
-type data struct {
-	Volumes []v1.PersistentVolume `json:"volumes"`
 }
