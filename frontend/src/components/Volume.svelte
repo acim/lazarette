@@ -11,8 +11,8 @@
   }
 </style>
 
-{#if $volume}
-  <ul>
+<ul>
+  {#if $volume}
     <li>Storage class: {$volume.spec.storageClassName}</li>
     <li>Reclaim policy: {$volume.spec.persistentVolumeReclaimPolicy}</li>
     <li>Capacity: {$volume.spec.capacity.storage}</li>
@@ -21,5 +21,7 @@
     <li>Claim kind: {$volume.spec.claimRef.kind}</li>
     <li>Claim name: {$volume.spec.claimRef.name}</li>
     <li>Claim namespace: {$volume.spec.claimRef.namespace}</li>
-  </ul>
-{:else}Click on the PersistentVolume{/if}
+  {:else}
+    <li>Click on the PersistentVolume</li>
+  {/if}
+</ul>
