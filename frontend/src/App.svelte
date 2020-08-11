@@ -1,3 +1,20 @@
+<script type="ts">
+  import type * as k8s from "@kubernetes/client-node";
+
+  async function fetchData() {
+    const res = await fetch("/volumes");
+    const data: {
+      volumes: k8s.V1PersistentVolume[];
+    } = await res.json();
+
+    if (res.ok) {
+      return data;
+    } else {
+      throw new Error();
+    }
+  }
+</script>
+
 {#await fetchData()}
   <p>loading</p>
 {:then data}
@@ -7,16 +24,3 @@
 {:catch error}
   <p style="color: red">{error.message}</p>
 {/await}
-
-<script type="ts">
-  async function fetchData() {
-    const res = await fetch("/volumes");
-    const data = await res.json();
-
-    if (res.ok) {
-      return data;
-    } else {
-      throw new Error(data);
-    }
-  }
-</script>
