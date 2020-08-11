@@ -5,6 +5,12 @@
   $: console.log($volume);
 </script>
 
+<style>
+  ul {
+    margin-top: 2rem;
+  }
+</style>
+
 {#if $volume}
   <ul>
     <li>Storage class: {$volume.spec.storageClassName}</li>
