@@ -1,4 +1,4 @@
-FROM golang:1.14.7-alpine AS go-builder
+FROM golang:1.15.0-alpine AS go-builder
 
 WORKDIR /app
 COPY go.mod go.sum ./
@@ -15,7 +15,7 @@ RUN npm ci && npm run build
 
 FROM alpine:3.12.0
 
-LABEL org.label-schema.description="Kurernetes Volumes Explorer" \
+LABEL org.label-schema.description="Kubernetes Volumes Explorer" \
     org.label-schema.name="kve" \
     org.label-schema.url="https://github.com/acim/kve/blob/master/README.md" \
     org.label-schema.vendor="ablab.io"
