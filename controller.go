@@ -21,29 +21,27 @@ func newClient(clientset *kubernetes.Clientset) *client {
 
 func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
+
 	w.Header().Set("Content-Type", "application/json")
 
 	scs, err := c.StorageV1().StorageClasses().List(ctx, metav1.ListOptions{})
 	if err != nil {
-		text := "failed getting storage classes"
-		log.Printf("%s: %v\n", text, err)
-		httpError(w, text)
+		httpError(w, err, "failed getting storage classes")
+
 		return
 	}
 
 	pvs, err := c.CoreV1().PersistentVolumes().List(ctx, metav1.ListOptions{})
 	if err != nil {
-		text := "failed getting persistent volumes"
-		log.Printf("%s: %v\n", text, err)
-		httpError(w, text)
+		httpError(w, err, "failed getting persistent volumes")
+
 		return
 	}
 
 	pvcs, err := c.CoreV1().PersistentVolumeClaims("").List(ctx, metav1.ListOptions{})
 	if err != nil {
-		text := "failed getting persistent volume claims"
-		log.Printf("%s: %v\n", text, err)
-		httpError(w, text)
+		httpError(w, err, "failed getting persistent volume claims")
+
 		return
 	}
 
@@ -60,16 +58,17 @@ func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
 
 	res, err := json.Marshal(resp)
 	if err != nil {
-		text := "failed encoding to json"
-		log.Printf("%s: %v\n", text, err)
-		httpError(w, text)
+		httpError(w, err, "failed encoding to json")
+
 		return
 	}
 
-	w.Write(res)
+	w.Write(res) //nolint:errcheck
 }
 
-func httpError(w http.ResponseWriter, text string) {
+func httpError(w http.ResponseWriter, err error, text string) {
+	log.Printf("%s: %v\n", text, err)
+
 	r := res{
 		Error: &text,
 	}
@@ -80,7 +79,7 @@ func httpError(w http.ResponseWriter, text string) {
 	}
 
 	w.WriteHeader(http.StatusInternalServerError)
-	w.Write(res)
+	w.Write(res) //nolint:errcheck
 }
 
 type res struct {

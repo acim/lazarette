@@ -13,10 +13,12 @@ func main() {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
+
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
+
 	client := newClient(clientset)
 
 	http.HandleFunc("/volumes", client.volumes)

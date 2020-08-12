@@ -4,10 +4,10 @@ type: kubernetes
 name: default
 
 steps:
-  # - name: lint-go
-  #   image: golangci/golangci-lint:latest-alpine
-  #   commands:
-  #     - golangci-lint run --allow-parallel-runners --skip-dirs frontend --enable-all
+  - name: lint-go
+    image: golangci/golangci-lint:latest-alpine
+    commands:
+      - golangci-lint run --allow-parallel-runners --skip-dirs frontend --enable-all
   - name: lint-svelte
     image: mhart/alpine-node:14
     commands:
@@ -20,7 +20,7 @@ steps:
       - echo -n "${DRONE_BRANCH//\//-}-${DRONE_COMMIT_SHA:0:8}" > .tags
       - if [ ${DRONE_BRANCH} = "master" ]; then echo -n ',stable,latest' >> .tags; else echo -n ',dev' >> .tags; fi
     depends_on:
-      #   - lint-go
+      - lint-go
       - lint-svelte
   - name: build
     image: plugins/docker
