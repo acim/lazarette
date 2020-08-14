@@ -51,12 +51,13 @@ section {
   background-color: #111;
   border-width: 0;
   border-radius: 1rem;
-  margin: 2rem;
+  margin: 1rem;
   padding: 1rem;
 }
 
 ul {
   list-style-type: none;
+  padding: 0;
 }
 
 .text-error {
