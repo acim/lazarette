@@ -48,9 +48,11 @@ h6 {
 }
 
 section {
-  background-color: #333;
+  background-color: #111;
   border-width: 0;
-  border-radius: 2rem;
+  border-radius: 1rem;
+  margin: 2rem;
+  padding: 1rem;
 }
 
 ul {
