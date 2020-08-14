@@ -12,11 +12,11 @@ import (
 )
 
 type client struct {
-	*kubernetes.Clientset
+	kubernetes.Interface
 }
 
-func newClient(clientset *kubernetes.Clientset) *client {
-	return &client{Clientset: clientset}
+func newClient(clientset kubernetes.Interface) *client {
+	return &client{Interface: clientset}
 }
 
 func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
