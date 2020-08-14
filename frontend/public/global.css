@@ -42,11 +42,19 @@ h6 {
   color: var(--color-accent);
 }
 
-ul {
-  list-style-type: none;
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+section {
   background-color: #333;
   border-width: 0;
   border-radius: 2rem;
+}
+
+ul {
+  list-style-type: none;
 }
 
 .text-error {

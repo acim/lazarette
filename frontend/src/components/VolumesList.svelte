@@ -28,24 +28,32 @@
   }
 </style>
 
-{#await promise}
-  <p>loading...</p>
-{:then response}
-  <ul>
-    {#each response.parsedBody.classes as item}
-      <li>{item.metadata.name}</li>
-    {/each}
-  </ul>
-  <ul>
-    {#each response.parsedBody.volumes as item}
-      <li on:click={() => setVolume(item)}>{item.metadata.name}</li>
-    {/each}
-  </ul>
-  <ul>
-    {#each response.parsedBody.claims as item}
-      <li>{item.metadata.name}</li>
-    {/each}
-  </ul>
-{:catch error}
-  <p class="text-error">{error.message}</p>
-{/await}
+<div class="container">
+  {#await promise}
+    <p>loading...</p>
+  {:then response}
+    <section>
+      <ul>
+        {#each response.parsedBody.classes as item}
+          <li>{item.metadata.name}</li>
+        {/each}
+      </ul>
+    </section>
+    <section>
+      <ul>
+        {#each response.parsedBody.volumes as item}
+          <li on:click={() => setVolume(item)}>{item.metadata.name}</li>
+        {/each}
+      </ul>
+    </section>
+    <section>
+      <ul>
+        {#each response.parsedBody.claims as item}
+          <li>{item.metadata.name}</li>
+        {/each}
+      </ul>
+    </section>
+  {:catch error}
+    <p class="text-error">{error.message}</p>
+  {/await}
+</div>
