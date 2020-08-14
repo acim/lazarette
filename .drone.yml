@@ -7,7 +7,7 @@ steps:
   - name: lint-go
     image: golangci/golangci-lint:latest-alpine
     commands:
-      - golangci-lint run --skip-dirs frontend --timeout 5m --enable-all
+      - golangci-lint run --skip-dirs frontend --timeout 10m --enable-all
   - name: lint-svelte
     image: mhart/alpine-node:14
     commands:
