@@ -3,9 +3,21 @@
   import { get } from "../fetch";
   import { volume } from "../store";
 
-  const promise = get<k8s.V1PersistentVolume[]>("/volumes");
+  interface Count {
+    classes: number;
+    volumes: number;
+    claims: number;
+  }
+
+  interface Volumes {
+    classes: k8s.V1StorageClass[];
+    volumes: k8s.V1PersistentVolume[];
+    claims: k8s.V1PersistentVolumeClaim[];
+    count: Count;
+  }
+
+  const promise = get<Volumes>("/volumes");
   function setVolume(vol: k8s.V1PersistentVolume) {
-    console.log(vol);
     $volume = vol;
   }
 </script>
@@ -20,7 +32,7 @@
   <p>loading...</p>
 {:then response}
   <ul>
-    {#each response.parsedBody as vol}
+    {#each response.parsedBody.volumes as vol}
       <li on:click={() => setVolume(vol)}>{vol.metadata.name}</li>
     {/each}
   </ul>
