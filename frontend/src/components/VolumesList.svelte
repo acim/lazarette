@@ -32,8 +32,18 @@
   <p>loading...</p>
 {:then response}
   <ul>
-    {#each response.parsedBody.volumes as vol}
-      <li on:click={() => setVolume(vol)}>{vol.metadata.name}</li>
+    {#each response.parsedBody.classes as item}
+      <li>{item.metadata.name}</li>
+    {/each}
+  </ul>
+  <ul>
+    {#each response.parsedBody.volumes as item}
+      <li on:click={() => setVolume(item)}>{item.metadata.name}</li>
+    {/each}
+  </ul>
+  <ul>
+    {#each response.parsedBody.claims as item}
+      <li>{item.metadata.name}</li>
     {/each}
   </ul>
 {:catch error}
