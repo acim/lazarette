@@ -45,8 +45,10 @@
           <li on:click={() => setVolume(item.volume)}>
             {item.volume.metadata.name}
           </li>
-          <li>{item.claim.metadata.name}</li>
-          <li>{JSON.stringify(item.pods)}</li>
+          <p>PVC: {item.claim.metadata.name}</p>
+          {#each item.pods as pod}
+            <p>Pod: {pod.metadata.name}</p>
+          {/each}
         {/each}
       </ul>
     </section>

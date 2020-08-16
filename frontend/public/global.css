@@ -3,8 +3,10 @@
 
 :root {
   --color-background: #000;
+  --color-canvas: #111;
   --color-primary: #f5f5f5;
   --color-accent: #ec407a;
+  --color-success: green;
   --color-error: red;
 }
 
@@ -50,7 +52,7 @@ h6 {
 }
 
 section {
-  background-color: #111;
+  background-color: var(--color-canvas);
   border-width: 0;
   border-radius: 1rem;
   margin: 1rem;
@@ -60,6 +62,10 @@ section {
 ul {
   list-style-type: none;
   padding: 0;
+}
+
+.text-success {
+  color: var(--color-success);
 }
 
 .text-error {
