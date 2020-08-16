@@ -38,8 +38,6 @@ func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	volumes := make([]volume, 0, len(pvs.Items))
-
 	pvcs, err := c.CoreV1().PersistentVolumeClaims("").List(ctx, metav1.ListOptions{})
 	if err != nil {
 		httpError(w, err, "failed getting persistent volume claims")
@@ -54,30 +52,12 @@ func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for i, pv := range pvs.Items {
-		volumes[i].PersistentVolume = &pv
-		for _, pvc := range pvcs.Items {
-			if pv.Name == pvc.Spec.VolumeName {
-				volumes[i].PersistentVolumeClaim = &pvc
-				for _, pod := range pods.Items {
-					for _, v := range pod.Spec.Volumes {
-						if pvc.Name == v.PersistentVolumeClaim.ClaimName {
-							volumes[i].Pods = append(volumes[i].Pods, pod)
-							break
-						}
-					}
-				}
-				break
-			}
-		}
-	}
-
 	// FieldSelector: fields.Set{"spec.volumes[].persistentVolumeClaim.claimName": "ghost-acim"}.AsSelector().String(),
 	// _ = corev1.ReadWriteMany
 
 	resp := res{
 		StorageClasses: scs.Items,
-		Volumes:        volumes,
+		Volumes:        getVolumes(pvs.Items, pvcs.Items, pods.Items),
 	}
 
 	res, err := json.Marshal(resp)
@@ -106,6 +86,34 @@ func httpError(w http.ResponseWriter, err error, text string) {
 	w.Write(res) //nolint:errcheck
 }
 
+func getVolumes(pvs []corev1.PersistentVolume, pvcs []corev1.PersistentVolumeClaim, pods []corev1.Pod) []volume {
+	volumes := make([]volume, 0, len(pvs))
+
+	for i, pv := range pvs {
+		volumes[i].PersistentVolume = pv
+
+		for _, pvc := range pvcs {
+			if pv.Name == pvc.Spec.VolumeName {
+				volumes[i].PersistentVolumeClaim = pvc
+
+				for _, pod := range pods {
+					for _, v := range pod.Spec.Volumes {
+						if pvc.Name == v.PersistentVolumeClaim.ClaimName {
+							volumes[i].Pods = append(volumes[i].Pods, pod)
+
+							break
+						}
+					}
+				}
+
+				break
+			}
+		}
+	}
+
+	return volumes
+}
+
 type res struct {
 	StorageClasses []storagev1.StorageClass `json:"classes"`
 	Volumes        []volume                 `json:"volumes"`
@@ -113,7 +121,7 @@ type res struct {
 }
 
 type volume struct {
-	PersistentVolume      *corev1.PersistentVolume      `json:"volume"`
-	PersistentVolumeClaim *corev1.PersistentVolumeClaim `json:"claim"`
-	Pods                  []corev1.Pod                  `json:"pods"`
+	PersistentVolume      corev1.PersistentVolume      `json:"volume"`
+	PersistentVolumeClaim corev1.PersistentVolumeClaim `json:"claim"`
+	Pods                  []corev1.Pod                 `json:"pods"`
 }
