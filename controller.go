@@ -8,6 +8,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/client-go/kubernetes"
 )
 
@@ -41,6 +42,15 @@ func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
 	pvcs, err := c.CoreV1().PersistentVolumeClaims("").List(ctx, metav1.ListOptions{})
 	if err != nil {
 		httpError(w, err, "failed getting persistent volume claims")
+
+		return
+	}
+
+	pods, err := c.CoreV1().Pods("").List(ctx, metav1.ListOptions{
+		FieldSelector: fields.Set{"spec.volumes[].persistentVolumeClaim.claimName": "ghost-acim"}.AsSelector().String(),
+	})
+	if err != nil {
+		httpError(w, err, "failed getting pods")
 
 		return
 	}
@@ -86,6 +96,7 @@ type res struct {
 	StorageClasses         []storagev1.StorageClass       `json:"classes"`
 	PersistentVolumes      []corev1.PersistentVolume      `json:"volumes"`
 	PersistentVolumeClaims []corev1.PersistentVolumeClaim `json:"claims"`
+	Pods                   []corev1.Pod                   `json:"pods"`
 	Count                  count                          `json:"count"`
 	Error                  *string                        `json:"error,omitempty"`
 }
