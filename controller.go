@@ -8,7 +8,6 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/client-go/kubernetes"
 )
 
@@ -39,6 +38,8 @@ func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	volumes := make([]volume, 0, len(pvs.Items))
+
 	pvcs, err := c.CoreV1().PersistentVolumeClaims("").List(ctx, metav1.ListOptions{})
 	if err != nil {
 		httpError(w, err, "failed getting persistent volume claims")
@@ -46,28 +47,37 @@ func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pods, err := c.CoreV1().Pods("").List(ctx, metav1.ListOptions{
-		FieldSelector: fields.Set{"spec.volumes.persistentVolumeClaim.claimName": "ghost-acim"}.AsSelector().String(),
-	})
+	pods, err := c.CoreV1().Pods("").List(ctx, metav1.ListOptions{})
 	if err != nil {
 		httpError(w, err, "failed getting pods")
 
 		return
 	}
 
+	for i, pv := range pvs.Items {
+		volumes[i].PersistentVolume = &pv
+		for _, pvc := range pvcs.Items {
+			if pv.Name == pvc.Spec.VolumeName {
+				volumes[i].PersistentVolumeClaim = &pvc
+				for _, pod := range pods.Items {
+					for _, v := range pod.Spec.Volumes {
+						if pvc.Name == v.PersistentVolumeClaim.ClaimName {
+							volumes[i].Pods = append(volumes[i].Pods, pod)
+							break
+						}
+					}
+				}
+				break
+			}
+		}
+	}
+
 	// FieldSelector: fields.Set{"spec.volumes[].persistentVolumeClaim.claimName": "ghost-acim"}.AsSelector().String(),
 	// _ = corev1.ReadWriteMany
 
 	resp := res{
-		StorageClasses:         scs.Items,
-		PersistentVolumes:      pvs.Items,
-		PersistentVolumeClaims: pvcs.Items,
-		Pods:                   pods.Items,
-		Count: count{
-			StorageClasses:         len(scs.Items),
-			PersistentVolumes:      len(pvs.Items),
-			PersistentVolumeClaims: len(pvcs.Items),
-		},
+		StorageClasses: scs.Items,
+		Volumes:        volumes,
 	}
 
 	res, err := json.Marshal(resp)
@@ -97,16 +107,13 @@ func httpError(w http.ResponseWriter, err error, text string) {
 }
 
 type res struct {
-	StorageClasses         []storagev1.StorageClass       `json:"classes"`
-	PersistentVolumes      []corev1.PersistentVolume      `json:"volumes"`
-	PersistentVolumeClaims []corev1.PersistentVolumeClaim `json:"claims"`
-	Pods                   []corev1.Pod                   `json:"pods"`
-	Count                  count                          `json:"count"`
-	Error                  *string                        `json:"error,omitempty"`
+	StorageClasses []storagev1.StorageClass `json:"classes"`
+	Volumes        []volume                 `json:"volumes"`
+	Error          *string                  `json:"error,omitempty"`
 }
 
-type count struct {
-	StorageClasses         int `json:"classes"`
-	PersistentVolumes      int `json:"volumes"`
-	PersistentVolumeClaims int `json:"claims"`
+type volume struct {
+	PersistentVolume      *corev1.PersistentVolume      `json:"volume"`
+	PersistentVolumeClaim *corev1.PersistentVolumeClaim `json:"claim"`
+	Pods                  []corev1.Pod                  `json:"pods"`
 }
