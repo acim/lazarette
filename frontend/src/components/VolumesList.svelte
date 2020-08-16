@@ -34,7 +34,8 @@
     {#each response.parsedBody.volumes as item}
       <section>
         <p>
-          <a href="." on:click={() => setVolume(item.volume)}>
+          PV:
+          <a href="." on:click|preventDefault={() => setVolume(item.volume)}>
             {item.volume.metadata.name}
           </a>
         </p>
