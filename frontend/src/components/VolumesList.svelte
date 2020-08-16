@@ -2,18 +2,18 @@
   import type * as k8s from "@kubernetes/client-node";
   import { get } from "../fetch";
   import { volume } from "../store";
+  import type { claim_component } from "svelte/internal";
 
-  interface Count {
-    classes: number;
-    volumes: number;
-    claims: number;
+  interface Volume {
+    volume: k8s.V1PersistentVolume;
+    claim: k8s.V1PersistentVolumeClaim;
+    pods: k8s.V1Pod[];
   }
 
   interface Volumes {
     classes: k8s.V1StorageClass[];
-    volumes: k8s.V1PersistentVolume[];
-    claims: k8s.V1PersistentVolumeClaim[];
-    count: Count;
+    volumes: Volume[];
+    error: string;
   }
 
   const promise = get<Volumes>("/volumes");
@@ -42,14 +42,11 @@
     <section>
       <ul>
         {#each response.parsedBody.volumes as item}
-          <li on:click={() => setVolume(item)}>{item.metadata.name}</li>
-        {/each}
-      </ul>
-    </section>
-    <section>
-      <ul>
-        {#each response.parsedBody.claims as item}
-          <li>{item.metadata.name}</li>
+          <li on:click={() => setVolume(item.volume)}>
+            {item.volume.metadata.name}
+          </li>
+          <li>{item.claim.metadata.name}</li>
+          <li>{JSON.stringify(item.pods)}</li>
         {/each}
       </ul>
     </section>
