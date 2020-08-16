@@ -99,7 +99,7 @@ func getVolumes(pvs []corev1.PersistentVolume, pvcs []corev1.PersistentVolumeCla
 
 				for _, pod := range pods {
 					for _, v := range pod.Spec.Volumes {
-						fmt.Println("AAA", pvc.Name, v.PersistentVolumeClaim.ClaimName)
+						fmt.Println("AAA", pvc, v)
 					}
 				}
 
