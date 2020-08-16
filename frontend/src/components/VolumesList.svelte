@@ -22,36 +22,28 @@
   }
 </script>
 
-<style>
-  li:hover {
-    cursor: pointer;
-  }
-</style>
-
 <div class="container">
   {#await promise}
     <p>loading...</p>
   {:then response}
     <section>
-      <ul>
-        {#each response.parsedBody.classes as item}
-          <li>{item.metadata.name}</li>
-        {/each}
-      </ul>
+      {#each response.parsedBody.classes as item}
+        <p>{item.metadata.name}</p>
+      {/each}
     </section>
-    <section>
-      <ul>
-        {#each response.parsedBody.volumes as item}
-          <li on:click={() => setVolume(item.volume)}>
+    {#each response.parsedBody.volumes as item}
+      <section>
+        <p>
+          <a href={null} on:click={() => setVolume(item.volume)}>
             {item.volume.metadata.name}
-          </li>
-          <p>PVC: {item.claim.metadata.name}</p>
-          {#each item.pods as pod}
-            <p>Pod: {pod.metadata.name}</p>
-          {/each}
+          </a>
+        </p>
+        <p>PVC: {item.claim.metadata.name}</p>
+        {#each item.pods as pod}
+          <p>Pod: {pod.metadata.name}</p>
         {/each}
-      </ul>
-    </section>
+      </section>
+    {/each}
   {:catch error}
     <p class="text-error">{error.message}</p>
   {/await}
