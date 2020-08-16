@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: backup
+spec:
+  containers:
+  - image: busybox
+    name: backup
+    command:
+    - tail
+    - -f
+    - /dev/null
+    volumeMounts:
+    - mountPath: /backup
+      name: backup
+      readOnly: true
+  volumes:
+  - name: backup
+    persistentVolumeClaim:
+      claimName: ghost-acim

@@ -47,13 +47,16 @@ func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
 	}
 
 	pods, err := c.CoreV1().Pods("").List(ctx, metav1.ListOptions{
-		FieldSelector: fields.Set{"spec.volumes[].persistentVolumeClaim.claimName": "ghost-acim"}.AsSelector().String(),
+		FieldSelector: fields.Set{"spec.volumes.persistentVolumeClaim.claimName": "ghost-acim"}.AsSelector().String(),
 	})
 	if err != nil {
 		httpError(w, err, "failed getting pods")
 
 		return
 	}
+
+	// FieldSelector: fields.Set{"spec.volumes[].persistentVolumeClaim.claimName": "ghost-acim"}.AsSelector().String(),
+	// _ = corev1.ReadWriteMany
 
 	resp := res{
 		StorageClasses:         scs.Items,
