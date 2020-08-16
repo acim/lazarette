@@ -59,6 +59,7 @@ func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
 		StorageClasses:         scs.Items,
 		PersistentVolumes:      pvs.Items,
 		PersistentVolumeClaims: pvcs.Items,
+		Pods:                   pods.Items,
 		Count: count{
 			StorageClasses:         len(scs.Items),
 			PersistentVolumes:      len(pvs.Items),
