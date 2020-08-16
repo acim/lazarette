@@ -87,7 +87,7 @@ func httpError(w http.ResponseWriter, err error, text string) {
 }
 
 func getVolumes(pvs []corev1.PersistentVolume, pvcs []corev1.PersistentVolumeClaim, pods []corev1.Pod) []volume {
-	volumes := make([]volume, 0, len(pvs))
+	volumes := make([]volume, len(pvs))
 
 	for i, pv := range pvs {
 		volumes[i].PersistentVolume = pv
