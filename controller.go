@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -96,15 +97,11 @@ func getVolumes(pvs []corev1.PersistentVolume, pvcs []corev1.PersistentVolumeCla
 			if pv.Name == pvc.Spec.VolumeName {
 				volumes[i].PersistentVolumeClaim = pvc
 
-				// for _, pod := range pods {
-				// 	for _, v := range pod.Spec.Volumes {
-				// 		if pvc.Name == v.PersistentVolumeClaim.ClaimName {
-				// 			volumes[i].Pods = append(volumes[i].Pods, pod)
-
-				// 			break
-				// 		}
-				// 	}
-				// }
+				for _, pod := range pods {
+					for _, v := range pod.Spec.Volumes {
+						fmt.Println("AAA", pvc.Name, v.PersistentVolumeClaim.ClaimName)
+					}
+				}
 
 				break
 			}
