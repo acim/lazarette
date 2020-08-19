@@ -3,7 +3,7 @@ import transition from "crayon-transition";
 import animate from "crayon-animate";
 import svelte from "crayon-svelte";
 import Base from "./pages/Base.svelte";
-import About from "./pages/About.svelte";
+import Classes from "./pages/Classes.svelte";
 
 const target = document.getElementById("app");
 const app = crayon.create();
@@ -17,10 +17,10 @@ app.use(
   })
 );
 
-app.path("/", (req, res) => req.redirect("/home"));
+app.path("/", (req, res) => req.redirect("/volumes"));
 
-app.path("/home", (req, res) => req.mount(Base, { req, nav: app }));
+app.path("/volumes", (req, res) => req.mount(Base, { req, nav: app }));
 
-app.path("/about", (req, res) => req.mount(About, { req, nav: app }));
+app.path("/classes", (req, res) => req.mount(Classes, { req, nav: app }));
 
 app.load();
