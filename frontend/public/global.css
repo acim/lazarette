@@ -71,3 +71,10 @@ ul {
 .text-error {
   color: var(--color-error);
 }
+
+nav button {
+  padding: 1rem;
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+}
