@@ -6,5 +6,5 @@
   export let nav: crayon.Router;
 </script>
 
-<Nav {nav} />
+<Nav {req} {nav} />
 Storage Classes

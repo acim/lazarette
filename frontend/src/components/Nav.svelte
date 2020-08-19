@@ -4,7 +4,7 @@
   import { mdiHarddisk } from "@mdi/js";
   import { mdiNas } from "@mdi/js";
 
-  //   export let req: crayon.Context;
+  export let req: crayon.Context;
   export let nav: crayon.Router;
 
   const color = getComputedStyle(document.documentElement).getPropertyValue(

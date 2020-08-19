@@ -9,7 +9,7 @@
 </script>
 
 <!-- <Header /> -->
-<Nav {nav} />
+<Nav {req} {nav} />
 <main>
   <VolumesList />
   <Volume />
