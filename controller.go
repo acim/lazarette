@@ -19,7 +19,7 @@ func newClient(clientset kubernetes.Interface) *client {
 	return &client{Interface: clientset}
 }
 
-func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
+func (c *client) classes(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	w.Header().Set("Content-Type", "application/json")
@@ -30,6 +30,25 @@ func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
+
+	resp := resClasses{
+		StorageClasses: scs.Items,
+	}
+
+	res, err := json.Marshal(resp)
+	if err != nil {
+		httpError(w, err, "failed encoding to json")
+
+		return
+	}
+
+	w.Write(res) //nolint:errcheck
+}
+
+func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	w.Header().Set("Content-Type", "application/json")
 
 	pvs, err := c.CoreV1().PersistentVolumes().List(ctx, metav1.ListOptions{})
 	if err != nil {
@@ -55,9 +74,8 @@ func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
 	// FieldSelector: fields.Set{"spec.volumes[].persistentVolumeClaim.claimName": "ghost-acim"}.AsSelector().String(),
 	// _ = corev1.ReadWriteMany
 
-	resp := res{
-		StorageClasses: scs.Items,
-		Volumes:        getVolumes(pvs.Items, pvcs.Items, pods.Items),
+	resp := resVolumes{
+		Volumes: getVolumes(pvs.Items, pvcs.Items, pods.Items),
 	}
 
 	res, err := json.Marshal(resp)
@@ -73,7 +91,7 @@ func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
 func httpError(w http.ResponseWriter, err error, text string) {
 	log.Printf("%s: %v\n", text, err)
 
-	r := res{
+	r := resError{
 		Error: &text,
 	}
 
@@ -117,10 +135,16 @@ func getVolumes(pvs []corev1.PersistentVolume, pvcs []corev1.PersistentVolumeCla
 	return volumes
 }
 
-type res struct {
+type resClasses struct {
 	StorageClasses []storagev1.StorageClass `json:"classes"`
-	Volumes        []volume                 `json:"volumes"`
-	Error          *string                  `json:"error,omitempty"`
+}
+
+type resVolumes struct {
+	Volumes []volume `json:"volumes"`
+}
+
+type resError struct {
+	Error *string `json:"error,omitempty"`
 }
 
 type volume struct {

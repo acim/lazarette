@@ -19,11 +19,10 @@
     font-size: 0.8rem;
     line-height: 1rem;
   }
-  hr {
-    color: var(--color-primary);
-    width: 80%;
-    margin: 1rem auto;
-    margin-top: 1.5rem;
+
+  a {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
 </style>
 
@@ -32,7 +31,6 @@
     <Icon path={mdiHarddisk} size="4rem" {color} />
     <span>Volumes</span>
   </a>
-  <hr />
   <a href="." on:click|preventDefault={() => nav.navigate('/classes')}>
     <Icon path={mdiNas} size="4rem" {color} />
     <span>Storage Classes</span>
