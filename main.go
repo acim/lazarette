@@ -21,8 +21,8 @@ func main() {
 
 	client := newClient(clientset)
 
-	http.HandleFunc("/volumes", client.volumes)
-	http.HandleFunc("/classes", client.classes)
+	http.HandleFunc("/v1/volumes", client.volumes)
+	http.HandleFunc("/v1/classes", client.classes)
 	http.HandleFunc("/", spaFileServeFunc("public"))
 
 	log.Fatal(http.ListenAndServe(":3000", nil))

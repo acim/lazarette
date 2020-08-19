@@ -8,7 +8,7 @@
     error: string;
   }
 
-  const promise = get<Classes>("/classes");
+  const promise = get<Classes>("/v1/classes");
 </script>
 
 <div class="container">
