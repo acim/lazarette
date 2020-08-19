@@ -1,25 +1,13 @@
 <script type="ts">
   import type crayon from "crayon";
-  import VolumesList from "../components/VolumesList.svelte";
   import Header from "../components/Header.svelte";
-  import Volume from "../components/Volume.svelte";
 
   // export let req: crayon.Context;
   export let nav: crayon.Router;
 </script>
-
-<style>
-  main {
-    display: flex;
-  }
-</style>
 
 <Header />
 <nav>
   <button on:click={() => nav.navigate('/home')}>Home</button>
   <button on:click={() => nav.navigate('/about')}>About</button>
 </nav>
-<main>
-  <VolumesList />
-  <Volume />
-</main>
