@@ -11,7 +11,6 @@
   }
 
   interface Volumes {
-    classes: k8s.V1StorageClass[];
     volumes: Volume[];
     error: string;
   }
@@ -26,11 +25,6 @@
   {#await promise}
     <p>loading...</p>
   {:then response}
-    <section>
-      {#each response.parsedBody.classes as item}
-        <p>{item.metadata.name}</p>
-      {/each}
-    </section>
     {#each response.parsedBody.volumes as item}
       <section>
         <p>

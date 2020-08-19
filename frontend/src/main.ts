@@ -2,7 +2,7 @@ import crayon from "crayon";
 import transition from "crayon-transition";
 import animate from "crayon-animate";
 import svelte from "crayon-svelte";
-import Base from "./pages/Base.svelte";
+import Volumes from "./pages/Volumes.svelte";
 import Classes from "./pages/Classes.svelte";
 
 const target = document.getElementById("app");
@@ -19,7 +19,7 @@ app.use(
 
 app.path("/", (req, res) => req.redirect("/volumes"));
 
-app.path("/volumes", (req, res) => req.mount(Base, { req, nav: app }));
+app.path("/volumes", (req, res) => req.mount(Volumes, { req, nav: app }));
 
 app.path("/classes", (req, res) => req.mount(Classes, { req, nav: app }));
 

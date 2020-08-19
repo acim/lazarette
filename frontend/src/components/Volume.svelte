@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type * as k8s from "@kubernetes/client-node";
+  // import type * as k8s from "@kubernetes/client-node";
   import { volume } from "../store";
 </script>
 
