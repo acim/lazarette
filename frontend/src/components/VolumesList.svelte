@@ -15,7 +15,7 @@
     error: string;
   }
 
-  const promise = get<Volumes>("/v1/volumes");
+  const promise = get<Volumes>("/v1/volumes.json");
   function setVolume(vol: k8s.V1PersistentVolume) {
     $volume = vol;
   }
