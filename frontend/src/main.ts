@@ -6,21 +6,21 @@ import Volumes from "./pages/Volumes.svelte";
 import Classes from "./pages/Classes.svelte";
 
 const target = document.getElementById("app");
-const app = crayon.create();
+const nav = crayon.create();
 
-app.use(svelte.router(target));
-app.use(transition.loader());
-app.use(
+nav.use(svelte.router(target));
+nav.use(transition.loader());
+nav.use(
   animate.defaults({
     name: transition.fade,
     duration: 350,
   })
 );
 
-app.path("/", (req, res) => req.redirect("/volumes"));
+nav.path("/", (req, res) => req.redirect("/volumes"));
 
-app.path("/volumes", (req, res) => req.mount(Volumes, { req, nav: app }));
+nav.path("/volumes", (req, res) => req.mount(Volumes, { req, nav }));
 
-app.path("/classes", (req, res) => req.mount(Classes, { req, nav: app }));
+nav.path("/classes", (req, res) => req.mount(Classes, { req, nav }));
 
-app.load();
+nav.load();
