@@ -8,6 +8,4 @@
 </script>
 
 <Nav {req} {nav} />
-<main>
-  <ClassesList />
-</main>
+<ClassesList />

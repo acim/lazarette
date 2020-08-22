@@ -2,6 +2,8 @@
   import type * as k8s from "@kubernetes/client-node";
   import { get } from "../fetch";
   import { volume } from "../store";
+  import Icon from "mdi-svelte";
+  import { mdiLoading } from "@mdi/js";
 
   interface Volume {
     volume: k8s.V1PersistentVolume;
@@ -18,11 +20,15 @@
   function setVolume(vol: k8s.V1PersistentVolume) {
     $volume = vol;
   }
+
+  const color = getComputedStyle(document.documentElement).getPropertyValue(
+    "--color-primary"
+  );
 </script>
 
 <div class="container">
   {#await promise}
-    <p>loading...</p>
+    <Icon path={mdiLoading} size="4rem" spin="2" {color} />
   {:then response}
     {#each response.parsedBody.volumes as item}
       <section>

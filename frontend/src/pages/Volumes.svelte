@@ -8,9 +8,6 @@
   export let nav: crayon.Router;
 </script>
 
-<!-- <Header /> -->
 <Nav {req} {nav} />
-<main>
-  <VolumesList />
-  <Volume />
-</main>
+<VolumesList />
+<Volume />
