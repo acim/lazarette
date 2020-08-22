@@ -31,6 +31,10 @@ func (c *client) classes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	for i := range scs.Items {
+		scs.Items[i].ManagedFields = nil
+	}
+
 	resp := resClasses{
 		StorageClasses: scs.Items,
 	}

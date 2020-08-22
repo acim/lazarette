@@ -1,7 +1,7 @@
 <script type="ts">
   import type * as k8s from "@kubernetes/client-node";
   import { get } from "../fetch";
-  import type { claim_component } from "svelte/internal";
+  import StorageClass from "./Class.svelte";
 
   interface Classes {
     classes: k8s.V1StorageClass[];
@@ -15,11 +15,9 @@
   {#await promise}
     <p>loading...</p>
   {:then response}
-    <section>
-      {#each response.parsedBody.classes as item}
-        <p>{item.metadata.name}</p>
-      {/each}
-    </section>
+    {#each response.parsedBody.classes as item}
+      <StorageClass storageClass={item} />
+    {/each}
   {:catch error}
     <p class="text-error">{error.message}</p>
   {/await}
