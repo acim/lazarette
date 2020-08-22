@@ -1,7 +1,7 @@
 <script type="ts">
   import type * as k8s from "@kubernetes/client-node";
   import { get } from "../fetch";
-  import StorageClass from "./StorageClass.svelte.svelte";
+  import StorageClass from "./StorageClass.svelte";
   import Icon from "mdi-svelte";
   import { mdiLoading } from "@mdi/js";
 
