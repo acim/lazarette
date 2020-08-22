@@ -3,7 +3,7 @@ import transition from "crayon-transition";
 import animate from "crayon-animate";
 import svelte from "crayon-svelte";
 import Volumes from "./pages/Volumes.svelte";
-import StorageClasses from "./pages/StorageClasses.svelte.svelte";
+import StorageClasses from "./pages/StorageClasses.svelte";
 
 const target = document.getElementById("app");
 const nav = crayon.create();
