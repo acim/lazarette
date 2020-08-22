@@ -1,8 +1,8 @@
 <script type="ts">
   import type crayon from "crayon";
   import Icon from "mdi-svelte";
-  import { mdiHarddisk } from "@mdi/js";
   import { mdiNas } from "@mdi/js";
+  import { mdiHexagonMultiple } from "@mdi/js";
 
   export let req: crayon.Context;
   export let nav: crayon.Router;
@@ -28,11 +28,11 @@
 
 <nav>
   <a href="." on:click|preventDefault={() => nav.navigate('/volumes')}>
-    <Icon path={mdiHarddisk} size="4rem" {color} />
+    <Icon path={mdiNas} size="4rem" {color} />
     <span>Volumes</span>
   </a>
   <a href="." on:click|preventDefault={() => nav.navigate('/classes')}>
-    <Icon path={mdiNas} size="4rem" {color} />
+    <Icon path={mdiHexagonMultiple} size="4rem" {color} />
     <span>Storage Classes</span>
   </a>
 </nav>
