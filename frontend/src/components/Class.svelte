@@ -15,13 +15,27 @@
   };
 </script>
 
-<section>
+<section class:position-relative={isDefault()}>
   <h3>{storageClass.metadata.name}</h3>
   {#if isDefault()}
-    <p>Default</p>
+    <tag>default</tag>
   {/if}
-  <p>Provisioner: {storageClass.provisioner}</p>
-  <p>Reclaim policy: {storageClass.reclaimPolicy}</p>
-  <p>Allow expansion: {storageClass.allowVolumeExpansion}</p>
-  <p>Binding mode: {storageClass.volumeBindingMode}</p>
+  <table>
+    <tr>
+      <td>Provisioner</td>
+      <td>{storageClass.provisioner}</td>
+    </tr>
+    <tr>
+      <td>Reclaim policy</td>
+      <td>{storageClass.reclaimPolicy}</td>
+    </tr>
+    <tr>
+      <td>Allow expansion</td>
+      <td>{storageClass.allowVolumeExpansion}</td>
+    </tr>
+    <tr>
+      <td>Binding mode</td>
+      <td>{storageClass.volumeBindingMode}</td>
+    </tr>
+  </table>
 </section>

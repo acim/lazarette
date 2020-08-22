@@ -51,6 +51,7 @@ section {
   border-radius: 1rem;
   margin: 1rem;
   padding: 1rem;
+  border-left: 0.5rem solid var(--color-accent);
 }
 
 ul {
@@ -96,4 +97,23 @@ a:visited {
 a:hover,
 a:active {
   color: var(--color-primary);
+}
+
+.position-relative {
+  position: relative;
+}
+
+tag {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+  padding: 0 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+}
+
+td:first-child {
+  padding-right: 2rem;
 }
