@@ -1,5 +1,6 @@
 <script type="ts">
   import type { V1StorageClass } from "@kubernetes/client-node";
+  import { fade } from "svelte/transition";
 
   export let storageClass: V1StorageClass;
 
@@ -15,7 +16,7 @@
   };
 </script>
 
-<section class:position-relative={isDefault()}>
+<section class:position-relative={isDefault()} transition:fade>
   <h3>{storageClass.metadata.name}</h3>
   {#if isDefault()}
     <tag>default</tag>

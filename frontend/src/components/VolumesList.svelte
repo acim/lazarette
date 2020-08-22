@@ -2,7 +2,6 @@
   import type * as k8s from "@kubernetes/client-node";
   import { get } from "../fetch";
   import { volume } from "../store";
-  import type { claim_component } from "svelte/internal";
 
   interface Volume {
     volume: k8s.V1PersistentVolume;

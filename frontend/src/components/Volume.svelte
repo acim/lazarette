@@ -1,5 +1,5 @@
 <script lang="ts">
-  // import type * as k8s from "@kubernetes/client-node";
+  import { fade } from "svelte/transition";
   import { volume } from "../store";
 </script>
 
@@ -9,7 +9,7 @@
   }
 </style>
 
-<ul>
+<ul transition:fade>
   {#if $volume}
     <li>Storage class: {$volume.spec.storageClassName}</li>
     <li>Reclaim policy: {$volume.spec.persistentVolumeReclaimPolicy}</li>
