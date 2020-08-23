@@ -2,12 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
 	corev1 "k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/kubernetes"
 )
 
@@ -33,6 +35,54 @@ func (c *client) classes(w http.ResponseWriter, r *http.Request) {
 
 	for i := range scs.Items {
 		scs.Items[i].ManagedFields = nil
+	}
+
+	resp := resClasses{
+		StorageClasses: scs.Items,
+	}
+
+	res, err := json.Marshal(resp)
+	if err != nil {
+		httpError(w, err, "failed encoding to json")
+
+		return
+	}
+
+	w.Write(res) //nolint:errcheck
+}
+
+func (c *client) setDefaultClass(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	w.Header().Set("Content-Type", "application/json")
+
+	scs, err := c.StorageV1().StorageClasses().List(ctx, metav1.ListOptions{})
+	if err != nil {
+		httpError(w, err, "failed getting storage classes")
+
+		return
+	}
+
+	for _, item := range scs.Items {
+		var payload []patchStringValue
+		payload = []patchStringValue{
+			{
+				Op:   "remove",
+				Path: "/metadata/annotations/storageclass.kubernetes.io/is-default-class",
+			},
+		}
+		payloadJson, err := json.Marshal(payload)
+		if err != nil {
+			httpError(w, err, "failed encoding json payload")
+
+			return
+		}
+		_, err = c.StorageV1().StorageClasses().Patch(ctx, item.GetName(), types.JSONPatchType, payloadJson, metav1.PatchOptions{})
+		if err != nil {
+			httpError(w, err, fmt.Sprintf("failed patching storage class %s", item.GetName()))
+
+			return
+		}
 	}
 
 	resp := resClasses{
@@ -155,4 +205,10 @@ type volume struct {
 	PersistentVolume      corev1.PersistentVolume      `json:"volume"`
 	PersistentVolumeClaim corev1.PersistentVolumeClaim `json:"claim"`
 	Pods                  []corev1.Pod                 `json:"pods"`
+}
+
+type patchStringValue struct {
+	Op    string `json:"op"`
+	Path  string `json:"path"`
+	Value string `json:"value"`
 }
