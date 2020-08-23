@@ -31,6 +31,7 @@ func main() {
 
 	e.GET("/v1/volumes.json", client.volumes)
 	e.GET("/v1/classes.json", client.classes)
+	e.PATCH("/v1/classes/default/:name", client.setDefaultClass)
 
 	e.Logger.Fatal(e.Start(":3000"))
 }

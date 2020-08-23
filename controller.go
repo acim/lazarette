@@ -1,13 +1,16 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 	corev1 "k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/kubernetes"
 )
 
@@ -23,6 +26,7 @@ func (k *client) classes(c echo.Context) error {
 	scs, err := k.StorageV1().StorageClasses().List(c.Request().Context(), metav1.ListOptions{})
 	if err != nil {
 		c.Logger().Error(err)
+
 		return errors.New("failed getting storage classes")
 	}
 
@@ -37,53 +41,60 @@ func (k *client) classes(c echo.Context) error {
 	return c.JSON(http.StatusOK, resp)
 }
 
-// func (c *client) setDefaultClass(w http.ResponseWriter, r *http.Request) {
-// 	ctx := r.Context()
+func (k *client) setDefaultClass(c echo.Context) error {
+	defaultClass := c.Param("name")
+	ctx := c.Request().Context()
 
-// 	w.Header().Set("Content-Type", "application/json")
+	scs, err := k.StorageV1().StorageClasses().List(ctx, metav1.ListOptions{})
+	if err != nil {
+		c.Logger().Error(err)
 
-// 	scs, err := c.StorageV1().StorageClasses().List(ctx, metav1.ListOptions{})
-// 	if err != nil {
-// 		httpError(w, err, "failed getting storage classes")
+		return errors.New("failed getting storage classes")
+	}
 
-// 		return
-// 	}
+	for _, item := range scs.Items {
+		var payload []patchStringValue
 
-// 	for _, item := range scs.Items {
-// 		var payload []patchStringValue
-// 		payload = []patchStringValue{
-// 			{
-// 				Op:   "remove",
-// 				Path: "/metadata/annotations/storageclass.kubernetes.io/is-default-class",
-// 			},
-// 		}
-// 		payloadJson, err := json.Marshal(payload)
-// 		if err != nil {
-// 			httpError(w, err, "failed encoding json payload")
+		switch item.GetName() {
+		case defaultClass:
+			payload = []patchStringValue{
+				{
+					Op:    "replace",
+					Path:  "/metadata/annotations/storageclass.kubernetes.io/is-default-class",
+					Value: "true",
+				},
+			}
+		default:
+			payload = []patchStringValue{
+				{
+					Op:   "remove",
+					Path: "/metadata/annotations/storageclass.kubernetes.io/is-default-class",
+				},
+			}
+		}
 
-// 			return
-// 		}
-// 		_, err = c.StorageV1().StorageClasses().Patch(ctx, item.GetName(), types.JSONPatchType, payloadJson, metav1.PatchOptions{})
-// 		if err != nil {
-// 			httpError(w, err, fmt.Sprintf("failed patching storage class %s", item.GetName()))
+		payloadJSON, err := json.Marshal(payload)
+		if err != nil {
+			c.Logger().Error(err)
 
-// 			return
-// 		}
-// 	}
+			return errors.New("failed encoding json payload")
+		}
 
-// 	resp := resClasses{
-// 		StorageClasses: scs.Items,
-// 	}
+		_, err = k.StorageV1().StorageClasses().Patch(
+			ctx, item.GetName(), types.JSONPatchType, payloadJSON, metav1.PatchOptions{})
+		if err != nil {
+			c.Logger().Error(err)
 
-// 	res, err := json.Marshal(resp)
-// 	if err != nil {
-// 		httpError(w, err, "failed encoding to json")
+			return fmt.Errorf("failed patching storage class %s", item.GetName())
+		}
+	}
 
-// 		return
-// 	}
+	resp := resClasses{
+		StorageClasses: scs.Items,
+	}
 
-// 	w.Write(res) //nolint:errcheck
-// }
+	return c.JSON(http.StatusOK, resp)
+}
 
 func (k *client) volumes(c echo.Context) error {
 	ctx := c.Request().Context()
@@ -91,18 +102,21 @@ func (k *client) volumes(c echo.Context) error {
 	pvs, err := k.CoreV1().PersistentVolumes().List(ctx, metav1.ListOptions{})
 	if err != nil {
 		c.Logger().Error(err)
+
 		return errors.New("failed getting persistent volumes")
 	}
 
 	pvcs, err := k.CoreV1().PersistentVolumeClaims("").List(ctx, metav1.ListOptions{})
 	if err != nil {
 		c.Logger().Error(err)
+
 		return errors.New("failed getting persistent volume claims")
 	}
 
 	pods, err := k.CoreV1().Pods("").List(ctx, metav1.ListOptions{})
 	if err != nil {
 		c.Logger().Error(err)
+
 		return errors.New("failed getting pods")
 	}
 
@@ -153,10 +167,6 @@ type resClasses struct {
 
 type resVolumes struct {
 	Volumes []volume `json:"volumes"`
-}
-
-type resError struct {
-	Error *string `json:"error,omitempty"`
 }
 
 type volume struct {
