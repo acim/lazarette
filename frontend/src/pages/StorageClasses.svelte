@@ -33,4 +33,7 @@
   {:else}
     <Icon path={mdiLoading} size="4rem" spin="2" {color} />
   {/each}
+  {#if error !== ''}
+    <p class="text-error">{error}</p>
+  {/if}
 </div>
