@@ -3,25 +3,25 @@ import type {
   V1StorageClass,
   V1PersistentVolume,
 } from "@kubernetes/client-node";
-import { get } from "./fetch";
+import { get, HttpResponse } from "./fetch";
 
 export const volume = writable<V1PersistentVolume | null>(null);
 
-export interface StorageClasses {
+interface StorageClasses {
   classes: V1StorageClass[];
   error: string;
 }
 
-export const storageClasses = writable<StorageClasses>({
-  classes: [],
-  error: "",
-});
+export const storageClasses = writable<V1StorageClass[]>([]);
 
 export const loadStorageClasses = async () => {
+  let res: HttpResponse<StorageClasses>;
   try {
-    const res = await get<StorageClasses>("/v1/classes.json");
-    storageClasses.set({ classes: res.parsedBody.classes, error: "" });
+    res = await get<StorageClasses>("/v1/classes.json");
+    storageClasses.set(res.parsedBody.classes);
   } catch (err) {
-    storageClasses.set({ classes: [], error: err.message });
+    throw new Error(
+      res?.parsedBody?.error !== "" ? res.parsedBody.error : err.message
+    );
   }
 };
