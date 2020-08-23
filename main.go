@@ -1,29 +1,36 @@
 package main
 
 import (
-	"log"
-	"net/http"
-
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 )
 
 func main() {
+	e := echo.New()
+
 	config, err := rest.InClusterConfig()
 	if err != nil {
-		log.Fatalln(err.Error())
+		e.Logger.Fatal(err)
 	}
 
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
-		log.Fatalln(err.Error())
+		e.Logger.Fatal(err)
 	}
 
 	client := newClient(clientset)
 
-	http.HandleFunc("/v1/volumes.json", client.volumes)
-	http.HandleFunc("/v1/classes.json", client.classes)
-	http.HandleFunc("/", spaFileServeFunc("public"))
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		Root:  "public",
+		HTML5: true,
+	}))
 
-	log.Fatal(http.ListenAndServe(":3000", nil))
+	e.GET("/v1/volumes.json", client.volumes)
+	e.GET("/v1/classes.json", client.classes)
+
+	e.Logger.Fatal(e.Start(":3000"))
 }

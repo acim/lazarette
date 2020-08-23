@@ -1,15 +1,13 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"log"
+	"errors"
 	"net/http"
 
+	"github.com/labstack/echo/v4"
 	corev1 "k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/kubernetes"
 )
 
@@ -21,16 +19,11 @@ func newClient(clientset kubernetes.Interface) *client {
 	return &client{Interface: clientset}
 }
 
-func (c *client) classes(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	w.Header().Set("Content-Type", "application/json")
-
-	scs, err := c.StorageV1().StorageClasses().List(ctx, metav1.ListOptions{})
+func (k *client) classes(c echo.Context) error {
+	scs, err := k.StorageV1().StorageClasses().List(c.Request().Context(), metav1.ListOptions{})
 	if err != nil {
-		httpError(w, err, "failed getting storage classes")
-
-		return
+		c.Logger().Error(err)
+		return errors.New("failed getting storage classes")
 	}
 
 	for i := range scs.Items {
@@ -41,88 +34,76 @@ func (c *client) classes(w http.ResponseWriter, r *http.Request) {
 		StorageClasses: scs.Items,
 	}
 
-	res, err := json.Marshal(resp)
-	if err != nil {
-		httpError(w, err, "failed encoding to json")
-
-		return
-	}
-
-	w.Write(res) //nolint:errcheck
+	return c.JSON(http.StatusOK, resp)
 }
 
-func (c *client) setDefaultClass(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
+// func (c *client) setDefaultClass(w http.ResponseWriter, r *http.Request) {
+// 	ctx := r.Context()
 
-	w.Header().Set("Content-Type", "application/json")
+// 	w.Header().Set("Content-Type", "application/json")
 
-	scs, err := c.StorageV1().StorageClasses().List(ctx, metav1.ListOptions{})
+// 	scs, err := c.StorageV1().StorageClasses().List(ctx, metav1.ListOptions{})
+// 	if err != nil {
+// 		httpError(w, err, "failed getting storage classes")
+
+// 		return
+// 	}
+
+// 	for _, item := range scs.Items {
+// 		var payload []patchStringValue
+// 		payload = []patchStringValue{
+// 			{
+// 				Op:   "remove",
+// 				Path: "/metadata/annotations/storageclass.kubernetes.io/is-default-class",
+// 			},
+// 		}
+// 		payloadJson, err := json.Marshal(payload)
+// 		if err != nil {
+// 			httpError(w, err, "failed encoding json payload")
+
+// 			return
+// 		}
+// 		_, err = c.StorageV1().StorageClasses().Patch(ctx, item.GetName(), types.JSONPatchType, payloadJson, metav1.PatchOptions{})
+// 		if err != nil {
+// 			httpError(w, err, fmt.Sprintf("failed patching storage class %s", item.GetName()))
+
+// 			return
+// 		}
+// 	}
+
+// 	resp := resClasses{
+// 		StorageClasses: scs.Items,
+// 	}
+
+// 	res, err := json.Marshal(resp)
+// 	if err != nil {
+// 		httpError(w, err, "failed encoding to json")
+
+// 		return
+// 	}
+
+// 	w.Write(res) //nolint:errcheck
+// }
+
+func (k *client) volumes(c echo.Context) error {
+	ctx := c.Request().Context()
+
+	pvs, err := k.CoreV1().PersistentVolumes().List(ctx, metav1.ListOptions{})
 	if err != nil {
-		httpError(w, err, "failed getting storage classes")
-
-		return
+		c.Logger().Error(err)
+		return errors.New("failed getting persistent volumes")
 	}
 
-	for _, item := range scs.Items {
-		var payload []patchStringValue
-		payload = []patchStringValue{
-			{
-				Op:   "remove",
-				Path: "/metadata/annotations/storageclass.kubernetes.io/is-default-class",
-			},
-		}
-		payloadJson, err := json.Marshal(payload)
-		if err != nil {
-			httpError(w, err, "failed encoding json payload")
-
-			return
-		}
-		_, err = c.StorageV1().StorageClasses().Patch(ctx, item.GetName(), types.JSONPatchType, payloadJson, metav1.PatchOptions{})
-		if err != nil {
-			httpError(w, err, fmt.Sprintf("failed patching storage class %s", item.GetName()))
-
-			return
-		}
-	}
-
-	resp := resClasses{
-		StorageClasses: scs.Items,
-	}
-
-	res, err := json.Marshal(resp)
+	pvcs, err := k.CoreV1().PersistentVolumeClaims("").List(ctx, metav1.ListOptions{})
 	if err != nil {
-		httpError(w, err, "failed encoding to json")
-
-		return
+		c.Logger().Error(err)
+		return errors.New("failed getting persistent volume claims")
 	}
 
-	w.Write(res) //nolint:errcheck
-}
-
-func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	w.Header().Set("Content-Type", "application/json")
-
-	pvs, err := c.CoreV1().PersistentVolumes().List(ctx, metav1.ListOptions{})
+	pods, err := k.CoreV1().Pods("").List(ctx, metav1.ListOptions{})
 	if err != nil {
-		httpError(w, err, "failed getting persistent volumes")
-
-		return
-	}
-
-	pvcs, err := c.CoreV1().PersistentVolumeClaims("").List(ctx, metav1.ListOptions{})
-	if err != nil {
-		httpError(w, err, "failed getting persistent volume claims")
-
-		return
-	}
-
-	pods, err := c.CoreV1().Pods("").List(ctx, metav1.ListOptions{})
-	if err != nil {
-		httpError(w, err, "failed getting pods")
-
-		return
+		c.Logger().Error(err)
+		return errors.New("failed getting pods")
 	}
 
 	// FieldSelector: fields.Set{"spec.volumes[].persistentVolumeClaim.claimName": "ghost-acim"}.AsSelector().String(),
@@ -132,30 +113,7 @@ func (c *client) volumes(w http.ResponseWriter, r *http.Request) {
 		Volumes: getVolumes(pvs.Items, pvcs.Items, pods.Items),
 	}
 
-	res, err := json.Marshal(resp)
-	if err != nil {
-		httpError(w, err, "failed encoding to json")
-
-		return
-	}
-
-	w.Write(res) //nolint:errcheck
-}
-
-func httpError(w http.ResponseWriter, err error, text string) {
-	log.Printf("%s: %v\n", text, err)
-
-	r := resError{
-		Error: &text,
-	}
-
-	res, err := json.Marshal(r)
-	if err != nil {
-		log.Println(err)
-	}
-
-	w.WriteHeader(http.StatusInternalServerError)
-	w.Write(res) //nolint:errcheck
+	return c.JSON(http.StatusOK, resp)
 }
 
 func getVolumes(pvs []corev1.PersistentVolume, pvcs []corev1.PersistentVolumeClaim, pods []corev1.Pod) []volume {
