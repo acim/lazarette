@@ -29,3 +29,11 @@ export async function post<T>(
 ): Promise<HttpResponse<T>> {
   return await http<T>(new Request(path, args));
 }
+
+export async function patch<T>(
+  path: string,
+  body: any,
+  args: RequestInit = { method: "patch", body: JSON.stringify(body) }
+): Promise<HttpResponse<T>> {
+  return await http<T>(new Request(path, args));
+}
