@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 	corev1 "k8s.io/api/core/v1"
@@ -52,6 +53,8 @@ func (k *client) setDefaultClass(c echo.Context) error {
 		return errors.New("failed getting storage classes")
 	}
 
+	path := fmt.Sprintf("/metadata/annotations/%s", jsonPointerEscape("storageclass.kubernetes.io/is-default-class"))
+
 	for _, item := range scs.Items {
 		var payload []patchStringValue
 
@@ -60,7 +63,7 @@ func (k *client) setDefaultClass(c echo.Context) error {
 			payload = []patchStringValue{
 				{
 					Op:    "add",
-					Path:  "/metadata/annotations/storageclass.kubernetes.io~1is-default-class",
+					Path:  path,
 					Value: "true",
 				},
 			}
@@ -68,7 +71,7 @@ func (k *client) setDefaultClass(c echo.Context) error {
 			payload = []patchStringValue{
 				{
 					Op:   "remove",
-					Path: "/metadata/annotations/storageclass.kubernetes.io~1is-default-class",
+					Path: path,
 				},
 			}
 		}
@@ -175,4 +178,11 @@ type patchStringValue struct {
 	Op    string `json:"op"`
 	Path  string `json:"path"`
 	Value string `json:"value"`
+}
+
+func jsonPointerEscape(s string) string {
+	s = strings.Replace(s, "~", "~0", -1)
+	s = strings.Replace(s, "/", "~1", -1)
+
+	return s
 }
