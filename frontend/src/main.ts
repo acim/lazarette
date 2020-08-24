@@ -21,6 +21,6 @@ nav.path("/", (req, res) => req.redirect("/volumes"));
 
 nav.path("/volumes", (req, res) => req.mount(PersistentVolumes, { nav }));
 
-nav.path("/classes", (req, res) => req.mount(StorageClasses, { nav, req }));
+nav.path("/classes", (req, res) => req.mount(StorageClasses, { nav }));
 
 nav.load();
