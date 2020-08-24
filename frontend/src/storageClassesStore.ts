@@ -1,4 +1,4 @@
-import { writable, Writable } from "svelte/store";
+import { writable, Readable } from "svelte/store";
 import type { V1StorageClass } from "@kubernetes/client-node";
 import { get, patch, HttpResponse } from "./fetch";
 
@@ -10,7 +10,7 @@ interface StorageClasses extends Error {
   classes: V1StorageClass[];
 }
 
-export interface StorageClassesWritable<T> extends Writable<T> {
+export interface StorageClassesReadable<T> extends Readable<T> {
   /**
    * Load data from server.
    */
@@ -23,12 +23,10 @@ export interface StorageClassesWritable<T> extends Writable<T> {
   setDefault(name: string): void;
 }
 
-const { subscribe, set, update } = writable<V1StorageClass[]>([]);
+const { subscribe, set } = writable<V1StorageClass[]>([]);
 
-const store: StorageClassesWritable<V1StorageClass[]> = {
+const store: StorageClassesReadable<V1StorageClass[]> = {
   subscribe,
-  set,
-  update,
   load: async () => {
     let res: HttpResponse<StorageClasses>;
     try {

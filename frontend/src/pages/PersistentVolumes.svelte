@@ -27,7 +27,7 @@
 <Nav {nav} />
 
 <div class="container">
-  {#each $store as item}
+  {#each $store as item (item.volume.metadata.uid)}
     <PersistentVolume persistentVolume={item} />
   {:else}
     <Icon path={mdiLoading} size="4rem" spin="2" {color} />

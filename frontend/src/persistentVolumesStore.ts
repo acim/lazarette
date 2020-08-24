@@ -1,4 +1,4 @@
-import { writable, Writable } from "svelte/store";
+import { writable, Readable } from "svelte/store";
 
 import type {
   V1PersistentVolume,
@@ -18,19 +18,17 @@ interface PersistentVolumes {
   error: string;
 }
 
-export interface PersistentVolumesWritable<T> extends Writable<T> {
+export interface PersistentVolumesReadable<T> extends Readable<T> {
   /**
    * Load data from server.
    */
   load(): void;
 }
 
-const { subscribe, set, update } = writable<PersistentVolume[]>([]);
+const { subscribe, set } = writable<PersistentVolume[]>([]);
 
-const store: PersistentVolumesWritable<PersistentVolume[]> = {
+const store: PersistentVolumesReadable<PersistentVolume[]> = {
   subscribe,
-  set,
-  update,
   load: async () => {
     let res: HttpResponse<PersistentVolumes>;
     try {
