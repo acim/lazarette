@@ -92,7 +92,7 @@ func (k *client) setDefaultClass(c echo.Context) error {
 		}
 	}
 
-	return c.JSON(http.StatusOK, nil)
+	return k.classes(c)
 }
 
 func (k *client) volumes(c echo.Context) error {

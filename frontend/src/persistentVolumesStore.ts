@@ -14,8 +14,8 @@ export interface PersistentVolume {
 }
 
 interface PersistentVolumes {
-  volumes: PersistentVolume[];
-  error: string;
+  volumes?: PersistentVolume[];
+  message?: string;
 }
 
 export interface PersistentVolumesReadable<T> extends Readable<T> {
@@ -36,7 +36,7 @@ const store: PersistentVolumesReadable<PersistentVolume[]> = {
       set(res?.parsedBody.volumes);
     } catch (err) {
       throw new Error(
-        res?.parsedBody.error ? res.parsedBody.error : err.message
+        res?.parsedBody.message ? res.parsedBody.message : err.message
       );
     }
   },

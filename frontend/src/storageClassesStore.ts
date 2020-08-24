@@ -2,12 +2,9 @@ import { writable, Readable } from "svelte/store";
 import type { V1StorageClass } from "@kubernetes/client-node";
 import { get, patch, HttpResponse } from "./fetch";
 
-interface Error {
-  message: string;
-}
-
-interface StorageClasses extends Error {
-  classes: V1StorageClass[];
+interface StorageClasses {
+  classes?: V1StorageClass[];
+  message?: string;
 }
 
 export interface StorageClassesReadable<T> extends Readable<T> {
@@ -39,10 +36,10 @@ const store: StorageClassesReadable<V1StorageClass[]> = {
     }
   },
   setDefault: async (name: string) => {
-    let res: HttpResponse<Error>;
+    let res: HttpResponse<StorageClasses>;
     try {
-      res = await patch<Error>(`/v1/classes/default/${name}`, null);
-      setTimeout(async () => await store.load(), 500);
+      res = await patch<StorageClasses>(`/v1/classes/default/${name}`, null);
+      set(res?.parsedBody.classes);
     } catch (err) {
       throw new Error(
         res?.parsedBody.message ? res.parsedBody.message : err.message

@@ -17,7 +17,7 @@
 
   onMount(async () => {
     try {
-      await store.load();
+      store.load();
     } catch (e) {
       error = e;
     }
@@ -25,7 +25,7 @@
 
   const setDefault = async (name: string) => {
     try {
-      await store.setDefault(name);
+      store.setDefault(name);
     } catch (e) {
       error = e;
     }
