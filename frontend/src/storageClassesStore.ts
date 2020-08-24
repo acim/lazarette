@@ -39,6 +39,7 @@ const store: StorageClassesReadable<V1StorageClass[]> = {
     let res: HttpResponse<StorageClasses>;
     try {
       res = await patch<StorageClasses>(`/v1/classes/default/${name}`, null);
+      set([]);
       set(res?.parsedBody.classes);
     } catch (err) {
       throw new Error(
