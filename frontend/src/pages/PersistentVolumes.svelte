@@ -18,7 +18,7 @@
 
   onMount(async () => {
     try {
-      await store.load;
+      await store.load();
     } catch (e) {
       error = e;
     }

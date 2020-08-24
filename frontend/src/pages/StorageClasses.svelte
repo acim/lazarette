@@ -4,7 +4,7 @@
   import StorageClass from "../components/StorageClass.svelte";
   import Icon from "mdi-svelte";
   import { mdiLoading } from "@mdi/js";
-  import { storageClasses, loadStorageClasses } from "../store";
+  import store from "../storageClassesStore";
   import { onMount } from "svelte";
 
   export let req: crayon.Context;
@@ -18,7 +18,7 @@
 
   onMount(async () => {
     try {
-      await loadStorageClasses();
+      await store.load();
     } catch (e) {
       error = e;
     }
@@ -28,7 +28,7 @@
 <Nav {req} {nav} />
 
 <div class="container">
-  {#each $storageClasses as item}
+  {#each $store as item}
     <StorageClass storageClass={item} />
   {:else}
     <Icon path={mdiLoading} size="4rem" spin="2" {color} />
