@@ -35,10 +35,10 @@ const store: PersistentVolumesWritable<PersistentVolume[]> = {
     let res: HttpResponse<PersistentVolumes>;
     try {
       res = await get<PersistentVolumes>("/v1/volumes.json");
-      set(res.parsedBody.volumes);
+      set(res?.parsedBody.volumes);
     } catch (err) {
       throw new Error(
-        res?.parsedBody?.error !== "" ? res.parsedBody.error : err.message
+        res?.parsedBody.error ? res.parsedBody.error : err.message
       );
     }
   },

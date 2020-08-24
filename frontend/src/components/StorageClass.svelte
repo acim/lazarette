@@ -21,6 +21,9 @@
   table {
     margin-bottom: 1rem;
   }
+  button {
+    margin-left: auto;
+  }
 </style>
 
 <section class:position-relative={isDefault()} transition:fade>

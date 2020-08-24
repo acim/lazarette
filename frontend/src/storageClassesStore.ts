@@ -33,10 +33,10 @@ const store: StorageClassesWritable<V1StorageClass[]> = {
     let res: HttpResponse<StorageClasses>;
     try {
       res = await get<StorageClasses>("/v1/classes.json");
-      set(res.parsedBody.classes);
+      set(res?.parsedBody.classes);
     } catch (err) {
       throw new Error(
-        res?.parsedBody?.error !== "" ? res.parsedBody.error : err.message
+        res?.parsedBody.error ? res.parsedBody.error : err.message
       );
     }
   },
@@ -47,7 +47,7 @@ const store: StorageClassesWritable<V1StorageClass[]> = {
       res = await this.load();
     } catch (err) {
       throw new Error(
-        res?.parsedBody?.error !== "" ? res.parsedBody.error : err.message
+        res?.parsedBody.error ? res.parsedBody.error : err.message
       );
     }
   },
