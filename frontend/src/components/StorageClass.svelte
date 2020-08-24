@@ -16,6 +16,12 @@
   };
 </script>
 
+<style>
+  table {
+    margin-bottom: 1rem;
+  }
+</style>
+
 <section class:position-relative={isDefault()} transition:fade>
   <h3>{storageClass.metadata.name}</h3>
   {#if isDefault()}
@@ -39,4 +45,7 @@
       <td>{storageClass.volumeBindingMode}</td>
     </tr>
   </table>
+  {#if !isDefault()}
+    <button>Set as default</button>
+  {/if}
 </section>
