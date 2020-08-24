@@ -44,7 +44,7 @@ const store: StorageClassesWritable<V1StorageClass[]> = {
     let res: HttpResponse<Error>;
     try {
       res = await patch<Error>(`/v1/classes/default/${name}`, null);
-      res = await this.load();
+      store.load();
     } catch (err) {
       throw new Error(
         res?.parsedBody.error ? res.parsedBody.error : err.message
