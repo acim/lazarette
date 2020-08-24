@@ -8,6 +8,7 @@
   import { onMount } from "svelte";
 
   export let nav: crayon.Router;
+  export let req: crayon.Context;
 
   const color = getComputedStyle(document.documentElement).getPropertyValue(
     "--color-primary"
@@ -18,6 +19,7 @@
   onMount(async () => {
     try {
       await store.load();
+      req.redirect("/classes");
     } catch (e) {
       error = e;
     }
@@ -25,9 +27,7 @@
 
   const setDefault = async (name: string) => {
     try {
-      setTimeout(() => {
-        store.setDefault(name);
-      }, 0);
+      await store.setDefault(name);
     } catch (e) {
       error = e;
     }
