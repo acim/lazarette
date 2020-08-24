@@ -17,7 +17,7 @@ export async function http<T>(request: RequestInfo): Promise<HttpResponse<T>> {
 
 export async function get<T>(
   path: string,
-  args: RequestInit = { method: "get" }
+  args: RequestInit = { method: "GET" }
 ): Promise<HttpResponse<T>> {
   return await http<T>(new Request(path, args));
 }
@@ -25,7 +25,7 @@ export async function get<T>(
 export async function post<T>(
   path: string,
   body: any,
-  args: RequestInit = { method: "post", body: JSON.stringify(body) }
+  args: RequestInit = { method: "POST", body: JSON.stringify(body) }
 ): Promise<HttpResponse<T>> {
   return await http<T>(new Request(path, args));
 }
@@ -33,7 +33,7 @@ export async function post<T>(
 export async function patch<T>(
   path: string,
   body: any,
-  args: RequestInit = { method: "patch", body: JSON.stringify(body) }
+  args: RequestInit = { method: "PATCH", body: JSON.stringify(body) }
 ): Promise<HttpResponse<T>> {
   return await http<T>(new Request(path, args));
 }

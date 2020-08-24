@@ -3,7 +3,7 @@ import type { V1StorageClass } from "@kubernetes/client-node";
 import { get, patch, HttpResponse } from "./fetch";
 
 interface Error {
-  error: string;
+  message: string;
 }
 
 interface StorageClasses extends Error {
@@ -36,7 +36,7 @@ const store: StorageClassesWritable<V1StorageClass[]> = {
       set(res?.parsedBody.classes);
     } catch (err) {
       throw new Error(
-        res?.parsedBody.error ? res.parsedBody.error : err.message
+        res?.parsedBody.message ? res.parsedBody.message : err.message
       );
     }
   },
@@ -47,7 +47,7 @@ const store: StorageClassesWritable<V1StorageClass[]> = {
       store.load();
     } catch (err) {
       throw new Error(
-        res?.parsedBody.error ? res.parsedBody.error : err.message
+        res?.parsedBody.message ? res.parsedBody.message : err.message
       );
     }
   },

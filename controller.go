@@ -67,8 +67,9 @@ func (k *client) setDefaultClass(c echo.Context) error {
 		default:
 			payload = []patchStringValue{
 				{
-					Op:   "remove",
-					Path: "/metadata/annotations/storageclass.kubernetes.io/is-default-class",
+					Op:    "replace",
+					Path:  "/metadata/annotations/storageclass.kubernetes.io/is-default-class",
+					Value: "false",
 				},
 			}
 		}
