@@ -7,7 +7,6 @@
   import store from "../persistentVolumesStore";
   import { onMount } from "svelte";
 
-  export let req: crayon.Context;
   export let nav: crayon.Router;
 
   const color = getComputedStyle(document.documentElement).getPropertyValue(
@@ -25,7 +24,7 @@
   });
 </script>
 
-<Nav {req} {nav} />
+<Nav {nav} />
 
 <div class="container">
   {#each $store as item}

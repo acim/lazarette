@@ -5,12 +5,6 @@
   export let persistentVolume: PersistentVolume;
 </script>
 
-<style>
-  ul {
-    margin-top: 2rem;
-  }
-</style>
-
 <section transition:fade>
   <h3>{persistentVolume.volume.metadata.name}</h3>
   <table>
@@ -43,24 +37,24 @@
     <tr>
       <td>Associated claim name</td>
       <td>
-        {persistentVolume.claim?.metadata.namespace}/{persistentVolume.claim.metadata.name}
+        {persistentVolume.claim.metadata.namespace}/{persistentVolume.claim.metadata.name}
       </td>
     </tr>
     <tr>
       <td>Associated claim capacity</td>
-      <td>{persistentVolume.claim?.status.capacity.storage}</td>
+      <td>{persistentVolume.claim.status.capacity.storage}</td>
     </tr>
     <tr>
       <td>Associated claim modes</td>
-      <td>{persistentVolume.claim?.status.accessModes}</td>
+      <td>{persistentVolume.claim.status.accessModes}</td>
     </tr>
     <tr>
       <td>Associated claim status</td>
-      <td>{persistentVolume.claim?.status.phase}</td>
+      <td>{persistentVolume.claim.status.phase}</td>
     </tr>
     <tr>
       <td>Mounted by pod</td>
-      <td>{persistentVolume.pods[0]?.metadata.name}</td>
+      <td>{persistentVolume.pods[0].metadata.name}</td>
     </tr>
   </table>
 </section>
