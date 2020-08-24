@@ -89,11 +89,7 @@ func (k *client) setDefaultClass(c echo.Context) error {
 		}
 	}
 
-	resp := resClasses{
-		StorageClasses: scs.Items,
-	}
-
-	return c.JSON(http.StatusOK, resp)
+	return c.JSON(http.StatusOK, nil)
 }
 
 func (k *client) volumes(c echo.Context) error {

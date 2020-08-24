@@ -23,13 +23,21 @@
       error = e;
     }
   });
+
+  const setDefault = async (name: string) => {
+    try {
+      await store.setDefault(name);
+    } catch (e) {
+      error = e;
+    }
+  };
 </script>
 
 <Nav {req} {nav} />
 
 <div class="container">
   {#each $store as item}
-    <StorageClass storageClass={item} />
+    <StorageClass storageClass={item} {setDefault} />
   {:else}
     <Icon path={mdiLoading} size="4rem" spin="2" {color} />
   {/each}

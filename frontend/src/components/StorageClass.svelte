@@ -3,6 +3,7 @@
   import { fade } from "svelte/transition";
 
   export let storageClass: V1StorageClass;
+  export let setDefault: (name: string) => void;
 
   const isDefault = (): boolean => {
     return (
@@ -46,6 +47,8 @@
     </tr>
   </table>
   {#if !isDefault()}
-    <button>Set as default</button>
+    <button on:click={() => setDefault(storageClass.metadata.name)}>
+      Set as default
+    </button>
   {/if}
 </section>
