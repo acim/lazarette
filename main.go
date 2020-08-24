@@ -10,6 +10,7 @@ import (
 func main() {
 	e := echo.New()
 	e.HideBanner = true
+	e.HidePort = true
 
 	config, err := rest.InClusterConfig()
 	if err != nil {
