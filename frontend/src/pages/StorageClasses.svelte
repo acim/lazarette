@@ -25,7 +25,9 @@
 
   const setDefault = async (name: string) => {
     try {
-      await store.setDefault(name);
+      setTimeout(() => {
+        store.setDefault(name);
+      }, 0);
     } catch (e) {
       error = e;
     }
