@@ -2,7 +2,7 @@ import crayon from "crayon";
 import transition from "crayon-transition";
 import animate from "crayon-animate";
 import svelte from "crayon-svelte";
-import Volumes from "./pages/Volumes.svelte";
+import PersistentVolumes from "./pages/PersistentVolumes.svelte";
 import StorageClasses from "./pages/StorageClasses.svelte";
 
 const target = document.getElementById("app");
@@ -19,7 +19,7 @@ nav.use(
 
 nav.path("/", (req, res) => req.redirect("/volumes"));
 
-nav.path("/volumes", (req, res) => req.mount(Volumes, { req, nav }));
+nav.path("/volumes", (req, res) => req.mount(PersistentVolumes, { req, nav }));
 
 nav.path("/classes", (req, res) => req.mount(StorageClasses, { req, nav }));
 
