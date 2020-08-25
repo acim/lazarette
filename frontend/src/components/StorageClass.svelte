@@ -2,9 +2,26 @@
   import type { V1StorageClass } from "@kubernetes/client-node";
   import { fade } from "svelte/transition";
   import store from "../storageClassesStore";
+  import Icon from "mdi-svelte";
+  import { mdiLoading } from "@mdi/js";
 
   export let i: number;
-  export let setDefault: (name: string) => void;
+
+  let loading = false;
+
+  const color = getComputedStyle(document.documentElement).getPropertyValue(
+    "--color-primary"
+  );
+
+  const setDefault = (name: string) => {
+    loading = true;
+    try {
+      store.setDefault(name);
+    } catch (err) {
+      console.log(err);
+    }
+    loading = false;
+  };
 
   let isDefault: () => boolean;
   $: isDefault = () => {
@@ -53,7 +70,9 @@
   </table>
   {#if !isDefault()}
     <button on:click={() => setDefault($store[i].metadata.name)}>
-      Set as default
+      {#if loading}
+        <Icon path={mdiLoading} spin="2" {color} />
+      {:else}Set as default{/if}
     </button>
   {/if}
 </section>

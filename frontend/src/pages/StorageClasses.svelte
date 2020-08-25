@@ -22,21 +22,13 @@
       error = err;
     }
   });
-
-  const setDefault = (name: string) => {
-    try {
-      store.setDefault(name);
-    } catch (err) {
-      error = err;
-    }
-  };
 </script>
 
 <Nav {nav} />
 
 <div class="container">
   {#each $store as item, i (item.metadata.uid)}
-    <StorageClass {i} {setDefault} />
+    <StorageClass {i} />
   {:else}
     <Icon path={mdiLoading} size="4rem" spin="2" {color} />
   {/each}
