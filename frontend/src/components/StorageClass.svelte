@@ -14,13 +14,11 @@
   );
 
   const setDefault = (name: string) => {
-    loading = true;
     try {
       store.setDefault(name);
     } catch (err) {
       console.log(err);
     }
-    loading = false;
   };
 
   let isDefault: () => boolean;
@@ -69,10 +67,14 @@
     </tr>
   </table>
   {#if !isDefault()}
-    <button on:click={() => setDefault($store[i].metadata.name)}>
+    <button
+      on:click|once={() => {
+        loading = true;
+        setDefault($store[i].metadata.name);
+      }}>
       {#if loading}
         <Icon path={mdiLoading} spin="2" {color} />
-      {:else}Set as default{/if}
+      {:else}Set to default{/if}
     </button>
   {/if}
 </section>
