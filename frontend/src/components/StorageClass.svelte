@@ -6,7 +6,8 @@
   export let i: number;
   export let setDefault: (name: string) => void;
 
-  const isDefault = (): boolean => {
+  let isDefault: () => boolean;
+  $: isDefault = () => {
     return (
       $store[i].metadata.annotations.hasOwnProperty(
         "storageclass.kubernetes.io/is-default-class"
@@ -16,8 +17,6 @@
       ] === "true"
     );
   };
-
-  $: console.log(i, $store[i].metadata.annotations);
 </script>
 
 <style>
