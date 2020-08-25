@@ -6,6 +6,8 @@ This is Kubernetes tool which provides GUI to explore storage classes, persisten
 
 Backend of the project is written in Go and frontend in Svelte using TypeScript and strict types.
 
+![screenshot](screenshot.png?raw=true)
+
 ## Install
 
 ```bash
