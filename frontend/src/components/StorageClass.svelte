@@ -16,6 +16,8 @@
       ] === "true"
     );
   };
+
+  $: console.log(i, $store[i].metadata.annotations);
 </script>
 
 <style>

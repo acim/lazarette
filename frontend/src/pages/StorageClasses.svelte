@@ -30,8 +30,6 @@
       error = err;
     }
   };
-
-  $: console.log($store);
 </script>
 
 <Nav {nav} />
