@@ -15,7 +15,7 @@
 
   let error: string;
 
-  onMount(async () => {
+  onMount(() => {
     try {
       store.load();
     } catch (e) {
@@ -23,7 +23,7 @@
     }
   });
 
-  const setDefault = async (name: string) => {
+  const setDefault = (name: string) => {
     try {
       store.setDefault(name);
     } catch (e) {

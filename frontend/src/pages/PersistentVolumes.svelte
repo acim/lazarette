@@ -15,7 +15,7 @@
 
   let error: string;
 
-  onMount(async () => {
+  onMount(() => {
     try {
       store.load();
     } catch (e) {

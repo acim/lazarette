@@ -20,7 +20,7 @@ export interface StorageClassesReadable<T> extends Readable<T> {
   setDefault(name: string): void;
 }
 
-const { subscribe, set } = writable<V1StorageClass[]>([]);
+const { subscribe, set, update } = writable<V1StorageClass[]>([]);
 
 const store: StorageClassesReadable<V1StorageClass[]> = {
   subscribe,
@@ -39,8 +39,7 @@ const store: StorageClassesReadable<V1StorageClass[]> = {
     let res: HttpResponse<StorageClasses>;
     try {
       res = await patch<StorageClasses>(`/v1/classes/default/${name}`, null);
-      set([]);
-      set(res?.parsedBody.classes);
+      update(() => res?.parsedBody.classes);
     } catch (err) {
       throw new Error(
         res?.parsedBody.message ? res.parsedBody.message : err.message
