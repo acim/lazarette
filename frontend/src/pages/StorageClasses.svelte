@@ -18,18 +18,20 @@
   onMount(() => {
     try {
       store.load();
-    } catch (e) {
-      error = e;
+    } catch (err) {
+      error = err;
     }
   });
 
   const setDefault = (name: string) => {
     try {
       store.setDefault(name);
-    } catch (e) {
-      error = e;
+    } catch (err) {
+      error = err;
     }
   };
+
+  $: console.log($store);
 </script>
 
 <Nav {nav} />
