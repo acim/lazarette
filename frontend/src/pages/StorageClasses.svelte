@@ -35,8 +35,8 @@
 <Nav {nav} />
 
 <div class="container">
-  {#each $store as item (item.metadata.uid)}
-    <StorageClass storageClass={item} {setDefault} />
+  {#each $store as item, i (item.metadata.uid)}
+    <StorageClass {i} {setDefault} />
   {:else}
     <Icon path={mdiLoading} size="4rem" spin="2" {color} />
   {/each}

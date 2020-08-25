@@ -1,16 +1,17 @@
 <script type="ts">
   import type { V1StorageClass } from "@kubernetes/client-node";
   import { fade } from "svelte/transition";
+  import store from "../storageClassesStore";
 
-  export let storageClass: V1StorageClass;
+  export let i: number;
   export let setDefault: (name: string) => void;
 
   const isDefault = (): boolean => {
     return (
-      storageClass.metadata.annotations.hasOwnProperty(
+      $store[i].metadata.annotations.hasOwnProperty(
         "storageclass.kubernetes.io/is-default-class"
       ) &&
-      storageClass.metadata.annotations[
+      $store[i].metadata.annotations[
         "storageclass.kubernetes.io/is-default-class"
       ] === "true"
     );
@@ -27,30 +28,30 @@
 </style>
 
 <section class:position-relative={isDefault()} transition:fade>
-  <h3>{storageClass.metadata.name}</h3>
+  <h3>{$store[i].metadata.name}</h3>
   {#if isDefault()}
     <tag>default</tag>
   {/if}
   <table>
     <tr>
       <td>Provisioner</td>
-      <td>{storageClass.provisioner}</td>
+      <td>{$store[i].provisioner}</td>
     </tr>
     <tr>
       <td>Reclaim policy</td>
-      <td>{storageClass.reclaimPolicy}</td>
+      <td>{$store[i].reclaimPolicy}</td>
     </tr>
     <tr>
       <td>Allow expansion</td>
-      <td>{storageClass.allowVolumeExpansion}</td>
+      <td>{$store[i].allowVolumeExpansion}</td>
     </tr>
     <tr>
       <td>Binding mode</td>
-      <td>{storageClass.volumeBindingMode}</td>
+      <td>{$store[i].volumeBindingMode}</td>
     </tr>
   </table>
   {#if !isDefault()}
-    <button on:click={() => setDefault(storageClass.metadata.name)}>
+    <button on:click={() => setDefault($store[i].metadata.name)}>
       Set as default
     </button>
   {/if}
