@@ -1,20 +1,16 @@
 <script type="ts">
-  import type { V1StorageClass } from "@kubernetes/client-node";
-  import { fade } from "svelte/transition";
+  import type {V1StorageClass} from "@kubernetes/client-node";
+  import {fade} from "svelte/transition";
   import store from "../storageClassesStore";
   import Icon from "mdi-svelte";
   import toast from "../toastStore";
 
   export let i: number;
 
-  const color = getComputedStyle(document.documentElement).getPropertyValue(
-    "--color-primary"
-  );
-
   const setDefault = (name: string) => {
     try {
       store.setDefault(name);
-      toast.toast({message: "Default storage class set"})
+      toast.set({message: "Default storage class set"});
     } catch (err) {
       console.log(err);
     }
