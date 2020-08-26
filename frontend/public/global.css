@@ -31,6 +31,7 @@ body {
 
 div.router-view {
   display: flex;
+  position: relative;
 }
 
 h1,

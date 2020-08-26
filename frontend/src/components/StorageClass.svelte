@@ -3,11 +3,9 @@
   import { fade } from "svelte/transition";
   import store from "../storageClassesStore";
   import Icon from "mdi-svelte";
-  import { mdiLoading } from "@mdi/js";
+  import toast from "../toastStore";
 
   export let i: number;
-
-  let loading = false;
 
   const color = getComputedStyle(document.documentElement).getPropertyValue(
     "--color-primary"
@@ -16,6 +14,7 @@
   const setDefault = (name: string) => {
     try {
       store.setDefault(name);
+      toast.toast({message: "Default storage class set"})
     } catch (err) {
       console.log(err);
     }
@@ -69,12 +68,9 @@
   {#if !isDefault()}
     <button
       on:click|once={() => {
-        loading = true;
         setDefault($store[i].metadata.name);
       }}>
-      {#if loading}
-        <Icon path={mdiLoading} spin="2" {color} />
-      {:else}Set to default{/if}
+      Set to default
     </button>
   {/if}
 </section>

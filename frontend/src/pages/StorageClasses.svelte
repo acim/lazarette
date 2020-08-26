@@ -6,6 +6,7 @@
   import { mdiLoading } from "@mdi/js";
   import store from "../storageClassesStore";
   import { onMount } from "svelte";
+  import Toast from "../components/Toast.svelte";
 
   export let nav: crayon.Router;
 
@@ -36,3 +37,5 @@
     <p class="text-error">{error}</p>
   {/if}
 </div>
+
+<Toast />
