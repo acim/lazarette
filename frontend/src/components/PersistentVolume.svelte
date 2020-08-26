@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { fade } from "svelte/transition";
-  import type { PersistentVolume } from "../persistentVolumesStore";
+  import {fade} from "svelte/transition";
+  import type {PersistentVolume} from "../persistentVolumesStore";
 
   export let persistentVolume: PersistentVolume;
 </script>
