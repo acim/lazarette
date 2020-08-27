@@ -60,6 +60,6 @@ spec:
       serviceAccountName: kve
       containers:
         - name: kve
-          image: acim/go-reflex
+          image: ablab/kve
           imagePullPolicy: Always
       restartPolicy: Always

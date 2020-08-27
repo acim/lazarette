@@ -2,9 +2,6 @@ apiVersion: kind.x-k8s.io/v1alpha4
 kind: Cluster
 nodes:
   - role: control-plane
-    extraPortMappings:
-      - containerPort: 3000
-        hostPort: 3000
     extraMounts:
       - hostPath: /home/acim/Projects/public/kve
         containerPath: /app
