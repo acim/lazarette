@@ -42,31 +42,23 @@ subjects:
     name: kve
     namespace: default
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
   name: kve
   namespace: default
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: kve
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: kve
-    spec:
-      serviceAccountName: kve
-      containers:
-        - name: kve
-          image: acim/go-reflex
-          imagePullPolicy: Always
-          volumeMounts:
-            - name: app
-              mountPath: /app
-      restartPolicy: Always
-      volumes:
-        - name: app
-          hostPath:
-            path: /app
+  containers:
+    - image: acim/go-reflex
+      imagePullPolicy: Always
+      name: kve
+      volumeMounts:
+        - mountPath: /app
+          name: app
+  restartPolicy: Never
+  serviceAccountName: kve
+  volumes:
+    - hostPath:
+        path: /app
+        type: ""
+      name: app
