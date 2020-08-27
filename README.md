@@ -33,4 +33,4 @@ kubectl apply -f dev/deploy.yaml
 
 ## Links
 
-https://dwmkerr.com/patching-kubernetes-resources-in-golang/
+[Patching Kubernetes Resources in Golang](https://dwmkerr.com/patching-kubernetes-resources-in-golang/)
