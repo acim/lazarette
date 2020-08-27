@@ -24,6 +24,13 @@ kubectl port-forward kve-xyz 3000:3000
 
 And now you can point your browser to http:/localhost:3000
 
+## Development
+
+```bash
+kind create cluster --config=dev/kind-config.yaml
+kubectl apply -f dev/deploy.yaml
+```
+
 ## Links
 
 https://dwmkerr.com/patching-kubernetes-resources-in-golang/

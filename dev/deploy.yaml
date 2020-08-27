@@ -60,6 +60,13 @@ spec:
       serviceAccountName: kve
       containers:
         - name: kve
-          image: acim/go-reflex
+          image: ablab/kve
           imagePullPolicy: Always
+          volumeMounts:
+            - name: app
+              mountPath: /app
       restartPolicy: Always
+      volumes:
+        - name: app
+          hostPath:
+            path: /app
