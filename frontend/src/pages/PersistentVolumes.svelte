@@ -33,8 +33,8 @@
   {#if loading}
     <Icon path={mdiLoading} size="4rem" spin="2" {color} />
   {/if}
-  {#each $store as item (item.volume.metadata.uid)}
-    <PersistentVolume persistentVolume={item} />
+  {#each $store as item, i (item.volume.metadata.uid)}
+    <PersistentVolume {i} />
   {:else}
     <p>No volumes.</p>
   {/each}

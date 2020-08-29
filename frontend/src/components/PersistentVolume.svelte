@@ -1,66 +1,87 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
   import type { PersistentVolume } from "../persistentVolumesStore";
+  import store from "../persistentVolumesStore";
 
-  export let persistentVolume: PersistentVolume;
+  export let i: number;
+
+  // let isDefault: () => boolean;
+  // $: isDefault = () => {
+  //   return (
+  //     $store[i].metadata.annotations.hasOwnProperty(
+  //       "storageclass.kubernetes.io/is-default-class"
+  //     ) &&
+  //     $store[i].metadata.annotations[
+  //       "storageclass.kubernetes.io/is-default-class"
+  //     ] === "true"
+  //   );
+  // };
 </script>
 
 <section transition:fade>
-  <h3>{persistentVolume.volume.metadata.name}</h3>
+  <h3>{$store[i].volume.metadata.name}</h3>
   <table>
     <tr>
       <td>Storage class</td>
-      <td>{persistentVolume.volume.spec.storageClassName}</td>
+      <td>{$store[i].volume.spec.storageClassName}</td>
     </tr>
     <tr>
       <td>Capacity</td>
-      <td>{persistentVolume.volume.spec.capacity.storage}</td>
+      <td>{$store[i].volume.spec.capacity.storage}</td>
     </tr>
     <tr>
       <td>Mode</td>
-      <td>{persistentVolume.volume.spec.accessModes}</td>
+      <td>{$store[i].volume.spec.accessModes}</td>
     </tr>
     <tr>
       <td>Reclaim policy</td>
-      <td>{persistentVolume.volume.spec.persistentVolumeReclaimPolicy}</td>
+      <td>{$store[i].volume.spec.persistentVolumeReclaimPolicy}</td>
     </tr>
     <tr>
       <td>Status</td>
-      <td>{persistentVolume.volume.status.phase}</td>
+      <td>{$store[i].volume.status.phase}</td>
     </tr>
     <tr>
       <td>Reference claim kind</td>
-      <td>{persistentVolume.volume.spec.claimRef.kind}</td>
+      <td>{$store[i].volume.spec.claimRef.kind}</td>
     </tr>
     <tr>
       <td>Referencing claim name</td>
       <td>
-        {persistentVolume.volume.spec.claimRef.namespace}/{persistentVolume.volume.spec.claimRef.name}
+        {$store[i].volume.spec.claimRef.namespace}/{$store[i].volume.spec.claimRef.name}
       </td>
     </tr>
     <tr>
       <td>Associated claim name</td>
       <td>
-        {persistentVolume.claim.metadata.namespace}/{persistentVolume.claim.metadata.name}
+        {$store[i].claim.metadata.namespace}/{$store[i].claim.metadata.name}
       </td>
     </tr>
     <tr>
       <td>Associated claim capacity</td>
-      <td>{persistentVolume.claim.status.capacity.storage}</td>
+      <td>{$store[i].claim.status.capacity.storage}</td>
     </tr>
     <tr>
       <td>Associated claim modes</td>
-      <td>{persistentVolume.claim.status.accessModes}</td>
+      <td>{$store[i].claim.status.accessModes}</td>
     </tr>
     <tr>
       <td>Associated claim status</td>
-      <td>{persistentVolume.claim.status.phase}</td>
+      <td>{$store[i].claim.status.phase}</td>
     </tr>
     <tr>
-      {#each persistentVolume.pods as pod, i (pod.metadata.uid)}
+      {#each $store[i].pods as pod, i (pod.metadata.uid)}
         <td>Mounted by pod</td>
-        <td>{persistentVolume.pods[i].metadata.name}</td>
+        <td>{$store[i].pods[i].metadata.name}</td>
       {/each}
     </tr>
   </table>
+  <!-- {#if !isDefault()}
+    <button
+      on:click|once={() => {
+        setDefault($store[i].metadata.name);
+      }}>
+      Set to default
+    </button>
+  {/if} -->
 </section>
