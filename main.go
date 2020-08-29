@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"k8s.io/client-go/kubernetes"
@@ -8,6 +10,11 @@ import (
 )
 
 func main() {
+	publicDir := os.Getenv("PUBLIC_DIR")
+	if publicDir == "" {
+		publicDir = "public"
+	}
+
 	e := echo.New()
 	e.HideBanner = true
 	e.HidePort = true
@@ -27,7 +34,7 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
-		Root:  "public",
+		Root:  publicDir,
 		HTML5: true,
 	}))
 

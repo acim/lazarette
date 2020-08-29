@@ -52,6 +52,9 @@ spec:
     - image: ablab/kve-dev
       imagePullPolicy: Always
       name: kve
+      env:
+        - name: PUBLIC_DIR
+          value: frontend/public
       volumeMounts:
         - mountPath: /app
           name: app
