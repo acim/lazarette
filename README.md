@@ -28,6 +28,7 @@ And now you can point your browser to http:/localhost:3000
 
 ```bash
 kind create cluster --config=dev/kind-config.yaml
+helm install nfs stable/nfs-server-provisioner
 kubectl apply -f dev/deploy.yaml
 ```
 

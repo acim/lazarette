@@ -1,4 +1,4 @@
-import {writable, Readable} from "svelte/store";
+import { writable, Readable } from "svelte/store";
 
 interface Toast {
   message: string;
@@ -12,7 +12,7 @@ export interface ToastReadable<T> extends Readable<T> {
   set(t: T): void;
 }
 
-const {subscribe, set} = writable<Toast>({message: ""});
+const { subscribe, set } = writable<Toast>({ message: "" });
 
 const store: ToastReadable<Toast> = {
   subscribe,
@@ -21,7 +21,7 @@ const store: ToastReadable<Toast> = {
       t.duration = 1000;
     }
     set(t);
-    setTimeout(() => set({message: ""}), t.duration);
+    setTimeout(() => set({ message: "" }), t.duration);
   },
 };
 
