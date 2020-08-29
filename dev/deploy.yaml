@@ -58,6 +58,13 @@ spec:
       volumeMounts:
         - mountPath: /app
           name: app
+      ports:
+        - name: http
+          containerPort: 3000
+          hostPort: 3000
+        - name: livereload
+          containerPort: 35729
+          hostPort: 35729
   restartPolicy: Never
   serviceAccountName: kve
   volumes:
