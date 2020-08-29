@@ -1,6 +1,5 @@
 <script type="ts">
   import store from "../toastStore";
-  console.log($store.message);
 </script>
 
 <style>
