@@ -95,6 +95,37 @@ func (k *client) setDefaultClass(c echo.Context) error {
 	return k.classes(c)
 }
 
+func (k *client) togglePersistentVolumeReclaimPolicy(c echo.Context) error {
+	persistentVolume := c.Param("name")
+	reclaimPolicy := c.Param("policy")
+	ctx := c.Request().Context()
+
+	payload := []patchStringValue{
+		{
+			Op:    "replace",
+			Path:  "/spec/persistentVolumeReclaimPolicy",
+			Value: reclaimPolicy,
+		},
+	}
+
+	payloadJSON, err := json.Marshal(payload)
+	if err != nil {
+		c.Logger().Error(err)
+
+		return errors.New("failed encoding json payload")
+	}
+
+	_, err = k.CoreV1().PersistentVolumes().Patch(
+		ctx, persistentVolume, types.JSONPatchType, payloadJSON, metav1.PatchOptions{})
+	if err != nil {
+		c.Logger().Error(err)
+
+		return fmt.Errorf("failed patching persistent volume %s", persistentVolume)
+	}
+
+	return k.volumes(c)
+}
+
 func (k *client) volumes(c echo.Context) error {
 	ctx := c.Request().Context()
 
@@ -142,6 +173,7 @@ func getVolumes(pvs []corev1.PersistentVolume, pvcs []corev1.PersistentVolumeCla
 				volumes[i].PersistentVolumeClaim = pvc
 
 				volumes[i].Pods = make([]corev1.Pod, 0)
+
 				for _, pod := range pods {
 					for _, v := range pod.Spec.Volumes {
 						if v.PersistentVolumeClaim != nil && pvc.Name == v.PersistentVolumeClaim.ClaimName {
