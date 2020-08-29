@@ -7,8 +7,9 @@
 
   export let i: number;
 
-  const setDefault = (name: string) => {
+  const setDefault = () => {
     try {
+      const name = $store[i].metadata.name;
       store.setDefault(name);
       toast.set({ message: `Default storage class set to ${name}` });
     } catch (err) {
@@ -64,7 +65,7 @@
   {#if !isDefault()}
     <button
       on:click|once={() => {
-        setDefault($store[i].metadata.name);
+        setDefault();
       }}>
       Set to default
     </button>

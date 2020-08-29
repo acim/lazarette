@@ -5,18 +5,19 @@
 
   export let i: number;
 
-  // let isDefault: () => boolean;
-  // $: isDefault = () => {
-  //   return (
-  //     $store[i].metadata.annotations.hasOwnProperty(
-  //       "storageclass.kubernetes.io/is-default-class"
-  //     ) &&
-  //     $store[i].metadata.annotations[
-  //       "storageclass.kubernetes.io/is-default-class"
-  //     ] === "true"
-  //   );
-  // };
+  const toggleReclaimPolicy = () => {
+    console.log("HERE");
+  };
 </script>
+
+<style>
+  table {
+    margin-bottom: 1rem;
+  }
+  button {
+    margin-left: auto;
+  }
+</style>
 
 <section transition:fade>
   <h3>{$store[i].volume.metadata.name}</h3>
@@ -76,12 +77,10 @@
       {/each}
     </tr>
   </table>
-  <!-- {#if !isDefault()}
-    <button
-      on:click|once={() => {
-        setDefault($store[i].metadata.name);
-      }}>
-      Set to default
-    </button>
-  {/if} -->
+  <button
+    on:click|once={() => {
+      toggleReclaimPolicy();
+    }}>
+    Toggle reclaim policy
+  </button>
 </section>
