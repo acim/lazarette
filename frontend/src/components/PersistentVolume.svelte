@@ -14,7 +14,7 @@
         policy = "Delete";
       }
       store.toggleReclaimPolicy(name, policy);
-      toast.set({ message: `Reclaim policy set to ${policy}` });
+      toast.set({ message: `Reclaim policy set to ${policy.toLowerCase()}` });
     } catch (err) {
       toast.set({ message: (err as Error).message });
     }
@@ -89,7 +89,7 @@
     </tr>
   </table>
   <button
-    on:click|once={() => {
+    on:click={() => {
       toggleReclaimPolicy();
     }}>
     Toggle reclaim policy
