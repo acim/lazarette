@@ -16,7 +16,8 @@ COPY build.sh start.sh /usr/local/bin/
 WORKDIR /app
 
 VOLUME /go
+VOLUME /app/frontend/node_modules
 
 CMD ["/usr/local/bin/start.sh"]
 
-EXPOSE 3000
+EXPOSE 3000 35729
