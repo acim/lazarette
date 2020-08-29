@@ -1,6 +1,6 @@
 <script lang="ts">
-  import {fade} from "svelte/transition";
-  import type {PersistentVolume} from "../persistentVolumesStore";
+  import { fade } from "svelte/transition";
+  import type { PersistentVolume } from "../persistentVolumesStore";
 
   export let persistentVolume: PersistentVolume;
 </script>
@@ -53,8 +53,10 @@
       <td>{persistentVolume.claim.status.phase}</td>
     </tr>
     <tr>
-      <td>Mounted by pod</td>
-      <td>{persistentVolume.pods[0].metadata.name}</td>
+      {#each persistentVolume.pods as pod, i (pod.metadata.uid)}
+        <td>Mounted by pod</td>
+        <td>{persistentVolume.pods[i].metadata.name}</td>
+      {/each}
     </tr>
   </table>
 </section>

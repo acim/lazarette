@@ -141,6 +141,7 @@ func getVolumes(pvs []corev1.PersistentVolume, pvcs []corev1.PersistentVolumeCla
 				pvc.ManagedFields = nil
 				volumes[i].PersistentVolumeClaim = pvc
 
+				volumes[i].Pods = make([]corev1.Pod, 0)
 				for _, pod := range pods {
 					for _, v := range pod.Spec.Volumes {
 						if v.PersistentVolumeClaim != nil && pvc.Name == v.PersistentVolumeClaim.ClaimName {
