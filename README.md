@@ -31,6 +31,8 @@ kind create cluster --config=dev/kind-config.yaml
 kubectl apply -f dev/deploy.yaml
 ```
 
+Access the application on http://172.18.0.2:3000
+
 ## Links
 
 [Patching Kubernetes Resources in Golang](https://dwmkerr.com/patching-kubernetes-resources-in-golang/)
