@@ -49,7 +49,7 @@ metadata:
   namespace: default
 spec:
   containers:
-    - image: acim/go-reflex
+    - image: ablab/kve-dev
       imagePullPolicy: Always
       name: kve
       volumeMounts:
