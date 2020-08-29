@@ -10,9 +10,9 @@
   const setDefault = (name: string) => {
     try {
       store.setDefault(name);
-      toast.set({ message: "Default storage class set" });
+      toast.set({ message: `Default storage class set to ${name}` });
     } catch (err) {
-      console.log(err);
+      toast.set({ message: (err as Error).message });
     }
   };
 
