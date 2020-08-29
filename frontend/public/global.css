@@ -68,7 +68,7 @@ ul {
 }
 
 nav {
-  display: flex;
+  /* display: flex; */
   text-align: center;
   flex-direction: column;
   background-color: var(--color-canvas);
@@ -77,12 +77,14 @@ nav {
 }
 
 button {
+  display: inline-block;
   padding: 0.5rem;
   background-color: var(--color-accent);
   border-radius: 0.5rem;
   color: inherit;
   border: none;
   cursor: pointer;
+  margin-left: 1rem;
 }
 
 a,
@@ -137,4 +139,9 @@ td:first-child {
 
 p {
   margin: 2rem;
+}
+
+.right {
+  display: flex;
+  justify-content: right;
 }

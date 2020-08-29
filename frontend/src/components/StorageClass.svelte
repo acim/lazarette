@@ -34,9 +34,6 @@
   table {
     margin-bottom: 1rem;
   }
-  button {
-    margin-left: auto;
-  }
 </style>
 
 <section class:position-relative={isDefault()} transition:fade>
@@ -63,11 +60,13 @@
     </tr>
   </table>
   {#if !isDefault()}
-    <button
-      on:click|once={() => {
-        setDefault();
-      }}>
-      Set to default
-    </button>
+    <div class="right">
+      <button
+        on:click|once={() => {
+          setDefault();
+        }}>
+        Set to default
+      </button>
+    </div>
   {/if}
 </section>

@@ -25,9 +25,6 @@
   table {
     margin-bottom: 1rem;
   }
-  button {
-    margin-left: auto;
-  }
 </style>
 
 <section transition:fade>
@@ -57,41 +54,61 @@
       <td>Reference claim kind</td>
       <td>{$store[i].volume.spec.claimRef.kind}</td>
     </tr>
-    <tr>
-      <td>Referencing claim name</td>
-      <td>
-        {$store[i].volume.spec.claimRef.namespace}/{$store[i].volume.spec.claimRef.name}
-      </td>
-    </tr>
-    <tr>
-      <td>Associated claim name</td>
-      <td>
-        {$store[i].claim.metadata.namespace}/{$store[i].claim.metadata.name}
-      </td>
-    </tr>
-    <tr>
-      <td>Associated claim capacity</td>
-      <td>{$store[i].claim.status.capacity.storage}</td>
-    </tr>
-    <tr>
-      <td>Associated claim modes</td>
-      <td>{$store[i].claim.status.accessModes}</td>
-    </tr>
-    <tr>
-      <td>Associated claim status</td>
-      <td>{$store[i].claim.status.phase}</td>
-    </tr>
-    <tr>
-      {#each $store[i].pods as pod, i (pod.metadata.uid)}
-        <td>Mounted by pod</td>
-        <td>{$store[i].pods[i].metadata.name}</td>
-      {/each}
-    </tr>
+    {#if $store[i].volume.spec.hasOwnProperty('claimRef')}
+      <tr>
+        <td>Referencing claim name</td>
+        <td>
+          {$store[i].volume.spec.claimRef.namespace}/{$store[i].volume.spec.claimRef.name}
+        </td>
+      </tr>
+    {/if}
+    {#if $store[i].volume.hasOwnProperty('claim')}
+      <tr>
+        <td>Associated claim name</td>
+        <td>
+          {$store[i].claim.metadata.namespace}/{$store[i].claim.metadata.name}
+        </td>
+      </tr>
+      <tr>
+        <td>Associated claim capacity</td>
+        <td>{$store[i].claim.status.capacity.storage}</td>
+      </tr>
+      <tr>
+        <td>Associated claim modes</td>
+        <td>{$store[i].claim.status.accessModes}</td>
+      </tr>
+      <tr>
+        <td>Associated claim status</td>
+        <td>{$store[i].claim.status.phase}</td>
+      </tr>
+      <tr>
+        {#each $store[i].pods as pod, i (pod.metadata.uid)}
+          <td>Mounted by pod</td>
+          <td>{$store[i].pods[i].metadata.name}</td>
+        {/each}
+      </tr>
+    {/if}
+    {#if $store[i].volume.spec.hasOwnProperty('claimRef') && !$store[i].volume.hasOwnProperty('claim')}
+      <tr>
+        <td>Error</td>
+        <td>No associated claim (orphan volume)</td>
+      </tr>
+    {/if}
   </table>
-  <button
-    on:click={() => {
-      toggleReclaimPolicy();
-    }}>
-    Toggle reclaim policy
-  </button>
+  <div class="right">
+    {#if $store[i].volume.spec.hasOwnProperty('claimRef') && !$store[i].volume.hasOwnProperty('claim')}
+      <button
+        on:click={() => {
+          toggleReclaimPolicy();
+        }}>
+        Remove orphan claim
+      </button>
+    {/if}
+    <button
+      on:click={() => {
+        toggleReclaimPolicy();
+      }}>
+      Toggle reclaim policy
+    </button>
+  </div>
 </section>
