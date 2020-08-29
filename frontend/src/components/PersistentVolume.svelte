@@ -21,6 +21,10 @@
       <td>{persistentVolume.volume.spec.accessModes}</td>
     </tr>
     <tr>
+      <td>Reclaim policy</td>
+      <td>{persistentVolume.volume.spec.persistentVolumeReclaimPolicy}</td>
+    </tr>
+    <tr>
       <td>Status</td>
       <td>{persistentVolume.volume.status.phase}</td>
     </tr>
