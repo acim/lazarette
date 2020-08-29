@@ -24,6 +24,11 @@ kubectl port-forward kve-xyz 3000:3000
 
 And now you can point your browser to http:/localhost:3000
 
+## Features
+
+- Set default storage class
+- Toggle persistent volumes reclaim policy to either Retain or Delete (Recycle is deprecated)
+
 ## Development
 
 ```bash
@@ -32,7 +37,7 @@ helm install nfs stable/nfs-server-provisioner
 kubectl apply -f dev/deploy.yaml
 ```
 
-Access the application on http://172.18.0.2:3000
+Access the application on http://172.18.0.2:3000 (change IP to your kind's node's IP)
 
 ## Links
 
