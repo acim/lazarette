@@ -1,10 +1,11 @@
 <script type="ts">
-  import type crayon from "crayon";
+  import Icon from "mdi-svelte";
   import Nav from "../components/Nav.svelte";
   import PersistentVolume from "../components/PersistentVolume.svelte";
-  import Icon from "mdi-svelte";
-  import { mdiLoading } from "@mdi/js";
+  import Toast from "../components/Toast.svelte";
   import store from "../persistentVolumesStore";
+  import type crayon from "crayon";
+  import { mdiLoading } from "@mdi/js";
   import { onMount } from "svelte";
 
   export let nav: crayon.Router;
@@ -14,17 +15,15 @@
   );
 
   let error: string;
-  let loading = false;
+  let loading = true;
 
   onMount(() => {
     try {
-      loading = true;
       store.load();
-      loading = false;
     } catch (e) {
       error = e;
-      loading = false;
     }
+    loading = false;
   });
 </script>
 
@@ -36,8 +35,12 @@
   {/if}
   {#each $store as item (item.volume.metadata.uid)}
     <PersistentVolume persistentVolume={item} />
+  {:else}
+    <p>No volumes.</p>
   {/each}
   {#if error}
     <p class="text-error">{error}</p>
   {/if}
 </div>
+
+<Toast />
