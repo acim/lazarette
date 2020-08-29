@@ -33,23 +33,23 @@ steps:
         from_secret: dockerhub_password
     depends_on:
       - tag
-  - name: deploy
-    image: quay.io/honestbee/drone-kubernetes
-    settings:
-      kubernetes_server:
-        from_secret: deploy_server
-      kubernetes_cert:
-        from_secret: deploy_cert
-      kubernetes_token:
-        from_secret: deploy_token
-      repo: ablab/kve
-      tag: "${DRONE_BRANCH}-${DRONE_COMMIT_SHA:0:8}"
-      deployment: kve
-      container: kve
-    depends_on:
-      - build
-    when:
-      branch:
-        - master
-      event:
-        - push
+  # - name: deploy
+  #   image: quay.io/honestbee/drone-kubernetes
+  #   settings:
+  #     kubernetes_server:
+  #       from_secret: deploy_server
+  #     kubernetes_cert:
+  #       from_secret: deploy_cert
+  #     kubernetes_token:
+  #       from_secret: deploy_token
+  #     repo: ablab/kve
+  #     tag: "${DRONE_BRANCH}-${DRONE_COMMIT_SHA:0:8}"
+  #     deployment: kve
+  #     container: kve
+  #   depends_on:
+  #     - build
+  #   when:
+  #     branch:
+  #       - master
+  #     event:
+  #       - push
