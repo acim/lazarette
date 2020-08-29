@@ -53,6 +53,8 @@ spec:
       imagePullPolicy: Always
       name: kve
       env:
+        - name: MATRIX
+          value: "true"
         - name: PUBLIC_DIR
           value: frontend/public
       volumeMounts:

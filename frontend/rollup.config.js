@@ -7,6 +7,7 @@ import sveltePreprocess from "svelte-preprocess";
 import typescript from "@rollup/plugin-typescript";
 
 const production = !process.env.ROLLUP_WATCH;
+const matrix = process.env.MATRIX === "true";
 
 function serve() {
   let server;
@@ -67,7 +68,7 @@ export default {
 
     // In dev mode, call `npm run start` once
     // the bundle has been generated
-    !production && serve(),
+    !production && !matrix && serve(),
 
     // Watch the `public` directory and refresh the
     // browser on changes when not in production
