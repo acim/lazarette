@@ -14,12 +14,16 @@
   );
 
   let error: string;
+  let loading = false;
 
   onMount(() => {
     try {
+      loading = true;
       store.load();
+      loading = false;
     } catch (e) {
       error = e;
+      loading = false;
     }
   });
 </script>
@@ -27,10 +31,11 @@
 <Nav {nav} />
 
 <div class="container">
+  {#if loading}
+    <Icon path={mdiLoading} size="4rem" spin="2" {color} />
+  {/if}
   {#each $store as item (item.volume.metadata.uid)}
     <PersistentVolume persistentVolume={item} />
-  {:else}
-    <Icon path={mdiLoading} size="4rem" spin="2" {color} />
   {/each}
   {#if error}
     <p class="text-error">{error}</p>

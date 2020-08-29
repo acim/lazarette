@@ -33,6 +33,7 @@ func main() {
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middleware.Gzip())
 	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
 		Root:  publicDir,
 		HTML5: true,
