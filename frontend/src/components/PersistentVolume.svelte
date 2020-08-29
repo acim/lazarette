@@ -1,12 +1,23 @@
 <script lang="ts">
-  import { fade } from "svelte/transition";
-  import type { PersistentVolume } from "../persistentVolumesStore";
   import store from "../persistentVolumesStore";
+  import toast from "../toastStore";
+  import type { PersistentVolume } from "../persistentVolumesStore";
+  import { fade } from "svelte/transition";
 
   export let i: number;
 
   const toggleReclaimPolicy = () => {
-    console.log("HERE");
+    try {
+      const name = $store[i].volume.metadata.name;
+      let policy = "Retain";
+      if ($store[i].volume.spec.persistentVolumeReclaimPolicy === "Retain") {
+        policy = "Delete";
+      }
+      store.toggleReclaimPolicy(name, policy);
+      toast.set({ message: `Reclaim policy set to ${policy}` });
+    } catch (err) {
+      toast.set({ message: (err as Error).message });
+    }
   };
 </script>
 

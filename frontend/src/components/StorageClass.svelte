@@ -1,9 +1,9 @@
 <script type="ts">
+  import Icon from "mdi-svelte";
+  import store from "../storageClassesStore";
+  import toast from "../toastStore";
   import type { V1StorageClass } from "@kubernetes/client-node";
   import { fade } from "svelte/transition";
-  import store from "../storageClassesStore";
-  import Icon from "mdi-svelte";
-  import toast from "../toastStore";
 
   export let i: number;
 
