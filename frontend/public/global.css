@@ -134,3 +134,7 @@ td:first-child {
 .show {
   display: block;
 }
+
+p {
+  margin: 2rem;
+}
