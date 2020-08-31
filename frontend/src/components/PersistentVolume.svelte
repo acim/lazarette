@@ -21,12 +21,6 @@
   };
 </script>
 
-<style>
-  table {
-    margin-bottom: 1rem;
-  }
-</style>
-
 <section transition:fade>
   <h3>{$store[i].volume.metadata.name}</h3>
   <table>
@@ -99,16 +93,17 @@
     {#if $store[i].volume.spec.hasOwnProperty('claimRef') && !$store[i].volume.hasOwnProperty('claim')}
       <button
         on:click={() => {
-          toggleReclaimPolicy();
+          alert('Not implemented');
         }}>
         Remove orphan claim
       </button>
+    {:else}
+      <button
+        on:click={() => {
+          toggleReclaimPolicy();
+        }}>
+        Toggle reclaim policy
+      </button>
     {/if}
-    <button
-      on:click={() => {
-        toggleReclaimPolicy();
-      }}>
-      Toggle reclaim policy
-    </button>
   </div>
 </section>

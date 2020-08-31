@@ -30,12 +30,6 @@
   };
 </script>
 
-<style>
-  table {
-    margin-bottom: 1rem;
-  }
-</style>
-
 <section class:position-relative={isDefault()} transition:fade>
   <h3>{$store[i].metadata.name}</h3>
   {#if isDefault()}

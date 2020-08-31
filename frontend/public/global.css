@@ -145,3 +145,7 @@ p {
   display: flex;
   justify-content: right;
 }
+
+table {
+  margin-bottom: 1rem;
+}
