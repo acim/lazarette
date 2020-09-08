@@ -9,11 +9,15 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "daily"
   - package-ecosystem: "npm"
     directory: "/frontend"
     schedule:
       interval: "daily"
   - package-ecosystem: "docker"
-    directory: "/"
+    directory: "/dev/image"
     schedule:
       interval: "daily"
