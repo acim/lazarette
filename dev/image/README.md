@@ -1,6 +1,6 @@
-# ablab/kve-dev
+# ablab/lazarette-dev
 
 ```sh
-docker build -t ablab/kve-dev .
-docker push ablab/kve-dev
+docker build -t ablab/lazarette-dev .
+docker push ablab/lazarette-dev
 ```

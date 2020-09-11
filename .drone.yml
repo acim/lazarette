@@ -26,7 +26,7 @@ steps:
   - name: build
     image: plugins/docker
     settings:
-      repo: ablab/kve
+      repo: ablab/lazarette
       username:
         from_secret: dockerhub_username
       password:
@@ -42,10 +42,10 @@ steps:
   #       from_secret: deploy_cert
   #     kubernetes_token:
   #       from_secret: deploy_token
-  #     repo: ablab/kve
+  #     repo: ablab/lazarette
   #     tag: "${DRONE_BRANCH}-${DRONE_COMMIT_SHA:0:8}"
-  #     deployment: kve
-  #     container: kve
+  #     deployment: lazarette
+  #     container: lazarette
   #   depends_on:
   #     - build
   #   when:

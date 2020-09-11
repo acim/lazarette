@@ -1,7 +1,7 @@
 FROM golang:1.15.2-buster
 
-LABEL org.label-schema.description="kve development image" \
-    org.label-schema.name="ablab/kve-dev" \
+LABEL org.label-schema.description="lazarette development image" \
+    org.label-schema.name="ablab/lazarette-dev" \
     org.label-schema.schema-version="1.0" \
     org.label-schema.vendor="ablab.io"
 

@@ -1,4 +1,4 @@
-module github.com/acim/kve
+module github.com/acim/lazarette
 
 go 1.15
 

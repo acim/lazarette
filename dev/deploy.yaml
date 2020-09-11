@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: kve
+  name: lazarette
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kve
+  name: lazarette
 rules:
   - apiGroups:
       - ""
@@ -32,26 +32,26 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: kve
+  name: lazarette
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: kve
+  name: lazarette
 subjects:
   - kind: ServiceAccount
-    name: kve
+    name: lazarette
     namespace: default
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: kve
+  name: lazarette
   namespace: default
 spec:
   containers:
-    - image: ablab/kve-dev
+    - image: ablab/lazarette-dev
       imagePullPolicy: Always
-      name: kve
+      name: lazarette
       env:
         - name: MATRIX
           value: "true"
@@ -68,7 +68,7 @@ spec:
           containerPort: 35729
           hostPort: 35729
   restartPolicy: Never
-  serviceAccountName: kve
+  serviceAccountName: lazarette
   volumes:
     - hostPath:
         path: /app

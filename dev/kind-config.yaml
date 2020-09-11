@@ -3,5 +3,5 @@ kind: Cluster
 nodes:
   - role: control-plane
     extraMounts:
-      - hostPath: /home/acim/Projects/public/kve
+      - hostPath: /home/acim/Projects/public/lazarette
         containerPath: /app

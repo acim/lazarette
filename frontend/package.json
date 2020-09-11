@@ -1,6 +1,6 @@
 {
-  "name": "kve",
-  "version": "0.0.1",
+  "name": "lazarette",
+  "version": "0.1.0",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
