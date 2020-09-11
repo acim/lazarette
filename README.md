@@ -37,7 +37,7 @@ helm install nfs stable/nfs-server-provisioner
 kubectl apply -f dev/deploy.yaml
 ```
 
-Access the application on http://172.18.0.2:3000 (change IP to your kind's node's IP)
+Access the application on http://172.20.0.2:3000 (change IP to your kind's node's IP)
 
 ## Links
 
