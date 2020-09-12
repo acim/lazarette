@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import type crayon from "crayon";
   import Icon from "mdi-svelte";
   import { mdiNas } from "@mdi/js";

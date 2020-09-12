@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import store from "../toastStore";
 </script>
 

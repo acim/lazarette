@@ -1,7 +1,6 @@
 <script lang="ts">
   import store from "../persistentVolumesStore";
   import toast from "../toastStore";
-  import type { PersistentVolume } from "../persistentVolumesStore";
   import { fade } from "svelte/transition";
 
   export let i: number;

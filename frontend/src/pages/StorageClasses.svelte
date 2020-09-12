@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
   import Icon from "mdi-svelte";
   import Nav from "../components/Nav.svelte";
   import StorageClass from "../components/StorageClass.svelte";
