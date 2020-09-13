@@ -6,7 +6,6 @@
   --color-canvas: #111;
   --color-primary: #f5f5f5;
   --color-accent: #ec407a;
-  --color-success: green;
   --color-error: red;
 }
 
@@ -28,15 +27,6 @@ div.router-view {
   position: relative;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--color-accent);
-}
-
 section {
   background-color: var(--color-canvas);
   border-width: 0;
@@ -46,15 +36,6 @@ section {
   border-left: 0.5rem solid var(--color-accent);
   display: flex;
   flex-direction: column;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.text-success {
-  color: var(--color-success);
 }
 
 .text-error {

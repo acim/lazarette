@@ -20,6 +20,12 @@
   };
 </script>
 
+<style>
+  h3 {
+    color: var(--color-accent);
+  }
+</style>
+
 <section transition:fade>
   <h3>{$store[i].volume.metadata.name}</h3>
   <table>
