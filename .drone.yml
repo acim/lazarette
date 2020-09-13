@@ -12,7 +12,7 @@ steps:
       - go vet ./...
       - golint ./...
       - golangci-lint run --skip-dirs frontend --timeout 60m --enable-all
-      - go run github.com/flowdev/spaghetti-cutter
+      - spaghetti-cutter
   - name: lint-svelte
     image: mhart/alpine-node:14
     commands:
