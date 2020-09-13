@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Icon from "mdi-svelte";
   import Nav from "../components/Nav.svelte";
   import StorageClass from "../components/StorageClass.svelte";
   import Toast from "../components/Toast.svelte";
@@ -9,10 +8,6 @@
   import { onMount } from "svelte";
 
   export let nav: crayon.Router;
-
-  const color = getComputedStyle(document.documentElement).getPropertyValue(
-    "--color-primary"
-  );
 
   let error: string;
   let loading = true;
@@ -31,7 +26,9 @@
 
 <div class="container">
   {#if loading}
-    <Icon path={mdiLoading} size="4rem" spin="2" {color} />
+    <svg viewBox="0 0 24 24">
+      <path d={mdiLoading} />
+    </svg> Volumes
   {/if}
   {#each $store as item, i (item.metadata.uid)}
     <StorageClass {i} />

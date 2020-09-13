@@ -1,14 +1,8 @@
 <script lang="ts">
   import type crayon from "crayon";
-  import Icon from "mdi-svelte";
-  import { mdiNas } from "@mdi/js";
-  import { mdiHexagonMultiple } from "@mdi/js";
+  import { mdiHexagonMultiple, mdiNas } from "@mdi/js";
 
   export let nav: crayon.Router;
-
-  const color = getComputedStyle(document.documentElement).getPropertyValue(
-    "--color-primary"
-  );
 </script>
 
 <style>
@@ -22,8 +16,17 @@
   a {
     display: inline-block;
     margin: 1rem 0;
-    font-size: 0.8rem;
-    line-height: 1rem;
+    line-height: 1.1rem;
+    outline: none;
+  }
+
+  a svg {
+    width: 4rem;
+  }
+
+  a svg path {
+    fill: var(--color-primary);
+    transition: 350ms fill;
   }
 
   a,
@@ -39,15 +42,23 @@
   a:active {
     color: var(--color-accent);
   }
+
+  a:focus svg path,
+  a:hover svg path,
+  a:active svg path {
+    fill: var(--color-accent);
+  }
 </style>
 
 <nav>
   <a href="." on:click|preventDefault={() => nav.navigate('/volumes')}>
-    <Icon path={mdiNas} size="4rem" {color} />
-    Volumes
+    <svg viewBox="0 0 24 24">
+      <path d={mdiNas} />
+    </svg> Volumes
   </a>
   <a href="." on:click|preventDefault={() => nav.navigate('/classes')}>
-    <Icon path={mdiHexagonMultiple} size="4rem" {color} />
-    Storage Classes
+    <svg viewBox="0 0 24 24">
+      <path d={mdiHexagonMultiple} />
+    </svg> Storage Classes
   </a>
 </nav>
