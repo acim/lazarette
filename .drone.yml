@@ -19,6 +19,10 @@ steps:
       - cd frontend
       - npm ci
       - npm run validate
+  - name: test-go
+    image: golang:1-alpine
+    commands:
+      - CGO_ENABLED=0 go test -json -coverprofile=coverage.out ./... >tests.json
   - name: tag
     image: busybox
     commands:
@@ -27,6 +31,7 @@ steps:
     depends_on:
       - lint-go
       - lint-svelte
+      - test-go
   - name: build
     image: plugins/docker
     settings:
