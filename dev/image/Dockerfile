@@ -8,15 +8,21 @@ LABEL org.label-schema.description="lazarette development image" \
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
     apt-get install -y nodejs
 
+RUN groupadd -r -g 1000 acim \
+    && useradd -r -u 1000 -g 1000 -m -c "developer" -s /bin/bash acim
+
+RUN mkdir /app && \
+    chown acim:acim /app
+
+USER 1000
+
 RUN go get -u github.com/cespare/reflex
 
-COPY reflex.conf /usr/local/etc/
-COPY build.sh start.sh /usr/local/bin/
+COPY --chown=acim:acim reflex.conf /home/acim/etc/
+COPY --chown=acim:acim build.sh start.sh /home/acim/bin/
 
 WORKDIR /app
 
-VOLUME /go
-
-CMD ["/usr/local/bin/start.sh"]
+ENTRYPOINT ["${HOME}/bin/start.sh"]
 
 EXPOSE 3000 35729
