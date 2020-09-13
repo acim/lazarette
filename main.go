@@ -41,7 +41,7 @@ func main() {
 
 	e.GET("/v1/volumes.json", controller.volumes)
 	e.GET("/v1/classes.json", controller.classes)
-	// e.PATCH("/v1/classes/default/:name", controller.setDefaultClass)
+	e.PATCH("/v1/classes/default/:name", controller.setDefaultClass)
 	e.PATCH("/v1/classes/policy/:name/:policy", controller.setPersistentVolumeReclaimPolicy)
 
 	e.Logger.Fatal(e.Start(":3000"))

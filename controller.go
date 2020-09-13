@@ -33,58 +33,18 @@ func (k *controller) classes(c echo.Context) error {
 	return c.JSON(http.StatusOK, resp)
 }
 
-// func (k *client) setDefaultClass(c echo.Context) error {
-// 	defaultClass := c.Param("name")
-// 	ctx := c.Request().Context()
+func (k *controller) setDefaultClass(c echo.Context) error {
+	defaultClass := c.Param("name")
 
-// 	scs, err := k.StorageV1().StorageClasses().List(ctx, metav1.ListOptions{})
-// 	if err != nil {
-// 		c.Logger().Error(err)
+	err := k.Interface.SetDefaultStorageClass(c.Request().Context(), defaultClass)
+	if err != nil {
+		c.Logger().Error(err)
 
-// 		return errors.New("failed getting storage classes")
-// 	}
+		return fmt.Errorf("failed patching storage class")
+	}
 
-// 	path := fmt.Sprintf("/metadata/annotations/%s", jsonPointerEscape("storageclass.kubernetes.io/is-default-class"))
-
-// 	for _, item := range scs.Items {
-// 		var payload []patchStringValue
-
-// 		switch item.GetName() {
-// 		case defaultClass:
-// 			payload = []patchStringValue{
-// 				{
-// 					Op:    "add",
-// 					Path:  path,
-// 					Value: "true",
-// 				},
-// 			}
-// 		default:
-// 			payload = []patchStringValue{
-// 				{
-// 					Op:   "remove",
-// 					Path: path,
-// 				},
-// 			}
-// 		}
-
-// 		payloadJSON, err := json.Marshal(payload)
-// 		if err != nil {
-// 			c.Logger().Error(err)
-
-// 			return errors.New("failed encoding json payload")
-// 		}
-
-// 		_, err = k.StorageV1().StorageClasses().Patch(
-// 			ctx, item.GetName(), types.JSONPatchType, payloadJSON, metav1.PatchOptions{})
-// 		if err != nil {
-// 			c.Logger().Error(err)
-
-// 			return fmt.Errorf("failed patching storage class %s", item.GetName())
-// 		}
-// 	}
-
-// 	return k.classes(c)
-// }
+	return k.classes(c)
+}
 
 func (k *controller) setPersistentVolumeReclaimPolicy(c echo.Context) error {
 	pvn := c.Param("name")

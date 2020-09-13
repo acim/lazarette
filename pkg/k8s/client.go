@@ -3,6 +3,7 @@ package k8s
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	corev1 "k8s.io/api/core/v1"
 	v1 "k8s.io/api/storage/v1"
@@ -87,7 +88,7 @@ func (c *Client) VolumesWithClaimsAndPods(ctx context.Context) ([]VolumeClaimPod
 }
 
 func (c *Client) SetPersistentVolumeReclaimPolicy(ctx context.Context, persistentVolumeName, policy string) error {
-	payload := []patchStringValue{
+	p := []patchStringValue{
 		{
 			Op:    "replace",
 			Path:  "/spec/persistentVolumeReclaimPolicy",
@@ -95,15 +96,59 @@ func (c *Client) SetPersistentVolumeReclaimPolicy(ctx context.Context, persisten
 		},
 	}
 
-	payloadJSON, err := json.Marshal(payload)
+	payload, err := json.Marshal(p)
 	if err != nil {
 		return err
 	}
 
 	_, err = c.Interface.CoreV1().PersistentVolumes().Patch(
-		ctx, persistentVolumeName, types.JSONPatchType, payloadJSON, metav1.PatchOptions{})
+		ctx, persistentVolumeName, types.JSONPatchType, payload, metav1.PatchOptions{})
 
 	return err
+}
+
+func (c *Client) SetDefaultStorageClass(ctx context.Context, storageClassName string) error {
+	scl, err := c.Interface.StorageV1().StorageClasses().List(ctx, metav1.ListOptions{})
+	if err != nil {
+		return err
+	}
+
+	path := fmt.Sprintf("/metadata/annotations/%s", jsonPointerEscape("storageclass.kubernetes.io/is-default-class"))
+
+	for _, item := range scl.Items {
+		var p []patchStringValue
+
+		switch item.GetName() {
+		case storageClassName:
+			p = []patchStringValue{
+				{
+					Op:    "add",
+					Path:  path,
+					Value: "true",
+				},
+			}
+		default:
+			p = []patchStringValue{
+				{
+					Op:   "remove",
+					Path: path,
+				},
+			}
+		}
+
+		payload, err := json.Marshal(p)
+		if err != nil {
+			return err
+		}
+
+		_, err = c.Interface.StorageV1().StorageClasses().Patch(
+			ctx, item.GetName(), types.JSONPatchType, payload, metav1.PatchOptions{})
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 type VolumeClaimPods struct {
