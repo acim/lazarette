@@ -39,7 +39,7 @@ func main() {
 		HTML5: true,
 	}))
 
-	// e.GET("/v1/volumes.json", controller.volumes)
+	e.GET("/v1/volumes.json", controller.volumes)
 	e.GET("/v1/classes.json", controller.classes)
 	// e.PATCH("/v1/classes/default/:name", controller.setDefaultClass)
 	// e.PATCH("/v1/classes/policy/:name/:policy", controller.togglePersistentVolumeReclaimPolicy)

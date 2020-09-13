@@ -13,7 +13,7 @@ type controller struct {
 	k8s.Interface
 }
 
-func newController(k *k8s.Client) *controller {
+func newController(k k8s.Interface) *controller {
 	return &controller{Interface: k}
 }
 
@@ -139,8 +139,8 @@ type volumes struct {
 	Volumes []k8s.VolumeClaimPods `json:"volumes"`
 }
 
-type patchStringValue struct {
-	Op    string `json:"op"`
-	Path  string `json:"path"`
-	Value string `json:"value"`
-}
+// type patchStringValue struct {
+// 	Op    string `json:"op"`
+// 	Path  string `json:"path"`
+// 	Value string `json:"value"`
+// }
