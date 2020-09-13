@@ -8,4 +8,5 @@ import (
 
 type Interface interface {
 	StorageClasses(context.Context) ([]v1.StorageClass, error)
+	VolumesWithClaimsAndPods(context.Context) ([]VolumeClaimPods, error)
 }
