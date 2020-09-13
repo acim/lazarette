@@ -59,7 +59,7 @@ func (k *controller) setPersistentVolumeReclaimPolicy(c echo.Context) error {
 }
 
 func (k *controller) volumes(c echo.Context) error {
-	vcps, err := k.Interface.VolumesWithClaimsAndPods(c.Request().Context())
+	vcps, err := k.Interface.PersistentVolumesWithClaimsAndPods(c.Request().Context())
 	if err != nil {
 		c.Logger().Error(err)
 

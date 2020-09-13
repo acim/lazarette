@@ -13,10 +13,12 @@ import (
 	"k8s.io/client-go/rest"
 )
 
+// Client contains wrapper methods to Kubernetes API.
 type Client struct {
 	kubernetes.Interface
 }
 
+// NewClient creates new Kubernetes client.
 func NewClient(c *rest.Config) (*Client, error) {
 	cs, err := kubernetes.NewForConfig(c)
 	if err != nil {
@@ -26,6 +28,7 @@ func NewClient(c *rest.Config) (*Client, error) {
 	return &Client{cs}, nil
 }
 
+// StorageClasses returns all storage classes in the cluster.
 func (c *Client) StorageClasses(ctx context.Context) ([]v1.StorageClass, error) {
 	scl, err := c.Interface.StorageV1().StorageClasses().List(ctx, metav1.ListOptions{})
 	if err != nil {
@@ -39,7 +42,9 @@ func (c *Client) StorageClasses(ctx context.Context) ([]v1.StorageClass, error) 
 	return scl.Items, nil
 }
 
-func (c *Client) VolumesWithClaimsAndPods(ctx context.Context) ([]VolumeClaimPods, error) {
+// PersistentVolumesWithClaimsAndPods returns all persistent volumes in the cluster together with their belonging
+// persistent volume claims and pods.
+func (c *Client) PersistentVolumesWithClaimsAndPods(ctx context.Context) ([]VolumeClaimPods, error) {
 	pvl, err := c.Interface.CoreV1().PersistentVolumes().List(ctx, metav1.ListOptions{})
 	if err != nil {
 		return nil, err
@@ -87,6 +92,7 @@ func (c *Client) VolumesWithClaimsAndPods(ctx context.Context) ([]VolumeClaimPod
 	return volumes, nil
 }
 
+// SetPersistentVolumeReclaimPolicy sets reclaim policy to the given persistent volume.
 func (c *Client) SetPersistentVolumeReclaimPolicy(ctx context.Context, persistentVolumeName, policy string) error {
 	p := []patchStringValue{
 		{
@@ -107,6 +113,7 @@ func (c *Client) SetPersistentVolumeReclaimPolicy(ctx context.Context, persisten
 	return err
 }
 
+// SetDefaultStorageClass sets default storage class and unsets default flat to all other storage classes.
 func (c *Client) SetDefaultStorageClass(ctx context.Context, storageClassName string) error {
 	scl, err := c.Interface.StorageV1().StorageClasses().List(ctx, metav1.ListOptions{})
 	if err != nil {
@@ -151,6 +158,7 @@ func (c *Client) SetDefaultStorageClass(ctx context.Context, storageClassName st
 	return nil
 }
 
+// VolumeClaimPods represents a persistent volume together with belonging claim and pods.
 type VolumeClaimPods struct {
 	PersistentVolume      corev1.PersistentVolume      `json:"volume"`
 	PersistentVolumeClaim corev1.PersistentVolumeClaim `json:"claim"`
