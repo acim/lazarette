@@ -6,6 +6,8 @@ This is Kubernetes tool which provides GUI to explore storage classes, persisten
 
 Backend of the project is written in Go and frontend in Svelte using TypeScript and strict types.
 
+According to [Merriam-Webster dictionary], [lazarette](https://www.merriam-webster.com/dictionary/lazaretto) is a space in a ship between decks used as a storeroom.
+
 ![screenshot](screenshot.png?raw=true)
 
 ## Install
