@@ -23,6 +23,6 @@ COPY --chown=acim:acim build.sh start.sh /home/acim/bin/
 
 WORKDIR /app
 
-ENTRYPOINT ["${HOME}/bin/start.sh"]
+ENTRYPOINT ["/home/acim/bin/start.sh"]
 
 EXPOSE 3000 35729
