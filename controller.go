@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/acim/lazarette/pkg/k8s"
@@ -85,36 +86,19 @@ func (k *controller) classes(c echo.Context) error {
 // 	return k.classes(c)
 // }
 
-// func (k *client) togglePersistentVolumeReclaimPolicy(c echo.Context) error {
-// 	persistentVolume := c.Param("name")
-// 	reclaimPolicy := c.Param("policy")
-// 	ctx := c.Request().Context()
+func (k *controller) setPersistentVolumeReclaimPolicy(c echo.Context) error {
+	pvn := c.Param("name")
+	p := c.Param("policy")
 
-// 	payload := []patchStringValue{
-// 		{
-// 			Op:    "replace",
-// 			Path:  "/spec/persistentVolumeReclaimPolicy",
-// 			Value: reclaimPolicy,
-// 		},
-// 	}
+	err := k.Interface.SetPersistentVolumeReclaimPolicy(c.Request().Context(), pvn, p)
+	if err != nil {
+		c.Logger().Error(err)
 
-// 	payloadJSON, err := json.Marshal(payload)
-// 	if err != nil {
-// 		c.Logger().Error(err)
+		return fmt.Errorf("failed patching persistent volume %s", pvn)
+	}
 
-// 		return errors.New("failed encoding json payload")
-// 	}
-
-// 	_, err = k.CoreV1().PersistentVolumes().Patch(
-// 		ctx, persistentVolume, types.JSONPatchType, payloadJSON, metav1.PatchOptions{})
-// 	if err != nil {
-// 		c.Logger().Error(err)
-
-// 		return fmt.Errorf("failed patching persistent volume %s", persistentVolume)
-// 	}
-
-// 	return k.volumes(c)
-// }
+	return k.volumes(c)
+}
 
 func (k *controller) volumes(c echo.Context) error {
 	vcps, err := k.Interface.VolumesWithClaimsAndPods(c.Request().Context())
@@ -138,9 +122,3 @@ type classes struct {
 type volumes struct {
 	Volumes []k8s.VolumeClaimPods `json:"volumes"`
 }
-
-// type patchStringValue struct {
-// 	Op    string `json:"op"`
-// 	Path  string `json:"path"`
-// 	Value string `json:"value"`
-// }
