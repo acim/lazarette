@@ -3,7 +3,8 @@
 [![Build Status](https://drone.ablab.io/api/badges/acim/lazarette/status.svg)](https://drone.ablab.io/acim/lazarette)
 [![Go Report](https://goreportcard.com/badge/github.com/acim/lazarette)](https://goreportcard.com/report/github.com/acim/lazarette)
 [![Docker Image Size](https://img.shields.io/docker/image-size/ablab/lazarette)](https://hub.docker.com/repository/docker/ablab/lazarette)
-[![Docker Pulls](https://img.shields.io/docker/pulls/ablab/lazarette?color=red)](https://hub.docker.com/repository/docker/ablab/lazarette)
+[![Docker Pulls](https://img.shields.io/docker/pulls/ablab/lazarette)](https://hub.docker.com/repository/docker/ablab/lazarette)
+[![License](https://img.shields.io/github/license/acim/lazarette)](LICENSE)
 
 This is Kubernetes tool which provides GUI to explore storage classes, persistent volumes and persistent volumes claims. Besides this, it allows you to set default storage class, which is the only action at the moment, but we plan to add much more features like rescuing released persistent volume, backup volumes, restore volumes, copy volumes, etc. We also plan to make volumes browser in order to access and view or backup single files.
 
