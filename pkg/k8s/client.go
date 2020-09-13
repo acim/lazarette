@@ -138,13 +138,13 @@ func (c *Client) SetDefaultStorageClass(ctx context.Context, storageClassName st
 
 		payload, err := json.Marshal(p)
 		if err != nil {
-			return err
+			return fmt.Errorf("storage class %s: %w", item.GetName(), err)
 		}
 
 		_, err = c.Interface.StorageV1().StorageClasses().Patch(
 			ctx, item.GetName(), types.JSONPatchType, payload, metav1.PatchOptions{})
 		if err != nil {
-			return err
+			return fmt.Errorf("storage class %s: %w", item.GetName(), err)
 		}
 	}
 

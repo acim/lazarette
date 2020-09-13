@@ -23,24 +23,22 @@ func (k *controller) classes(c echo.Context) error {
 	if err != nil {
 		c.Logger().Error(err)
 
-		return errors.New("failed getting storage classes")
+		return errors.New("failed getting storage classes") //nolint:goerr113
 	}
 
-	resp := classes{
+	return c.JSON(http.StatusOK, classes{
 		StorageClasses: scs,
-	}
-
-	return c.JSON(http.StatusOK, resp)
+	})
 }
 
 func (k *controller) setDefaultClass(c echo.Context) error {
-	defaultClass := c.Param("name")
+	dc := c.Param("name")
 
-	err := k.Interface.SetDefaultStorageClass(c.Request().Context(), defaultClass)
+	err := k.Interface.SetDefaultStorageClass(c.Request().Context(), dc)
 	if err != nil {
 		c.Logger().Error(err)
 
-		return fmt.Errorf("failed patching storage class")
+		return fmt.Errorf("failed setting default storage class to %s", dc) //nolint:goerr113
 	}
 
 	return k.classes(c)
@@ -54,7 +52,7 @@ func (k *controller) setPersistentVolumeReclaimPolicy(c echo.Context) error {
 	if err != nil {
 		c.Logger().Error(err)
 
-		return fmt.Errorf("failed patching persistent volume %s", pvn)
+		return fmt.Errorf("failed setting reclaim policy for persistent volume %s", pvn) //nolint:goerr113
 	}
 
 	return k.volumes(c)
@@ -65,7 +63,7 @@ func (k *controller) volumes(c echo.Context) error {
 	if err != nil {
 		c.Logger().Error(err)
 
-		return errors.New("failed getting persistent volumes")
+		return errors.New("failed getting persistent volumes with claims and pods") //nolint:goerr113
 	}
 
 	resp := volumes{
