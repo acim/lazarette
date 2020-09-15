@@ -22,7 +22,7 @@ steps:
   - name: test-go
     image: golang:1-alpine
     commands:
-      - CGO_ENABLED=0 go test -json -coverprofile=coverage.out ./... >tests.json
+      - CGO_ENABLED=0 go test -json -coverprofile=coverage.out $(go list ./... | grep -v /frontend/) >tests.json
   - name: tag
     image: busybox
     commands:
