@@ -7,8 +7,6 @@ steps:
   - name: lint-go
     image: ablab/golangci-lint
     commands:
-      - go get -u golang.org/x/lint/golint
-      - go get -u github.com/flowdev/spaghetti-cutter
       - go vet ./...
       - golint ./...
       - golangci-lint run --skip-dirs frontend --timeout 60m --enable-all
