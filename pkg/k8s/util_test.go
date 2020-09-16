@@ -1,4 +1,4 @@
-package k8s
+package k8s //nolint:testpackage
 
 import "testing"
 
@@ -31,6 +31,7 @@ func TestJsonPointerEscape(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			if out := jsonPointerEscape(tt.in); out != tt.out {
 				t.Errorf("got %q, want %q", out, tt.out)
