@@ -18,13 +18,18 @@ type Client struct {
 	kubernetes.Interface
 }
 
-// NewClient creates new Kubernetes client.
-func NewClient(c *rest.Config) (*Client, error) {
+// NewClientForConfig creates new Kubernetes client wrapper using provided configuration.
+func NewClientForConfig(c *rest.Config) (*Client, error) {
 	cs, err := kubernetes.NewForConfig(c)
 	if err != nil {
 		return nil, err
 	}
 
+	return &Client{cs}, nil
+}
+
+// NewClient creates new Kubernetes client wrapper using provided Kubernetes client.
+func NewClient(cs kubernetes.Interface) (*Client, error) {
 	return &Client{cs}, nil
 }
 

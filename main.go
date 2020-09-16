@@ -24,7 +24,7 @@ func main() {
 		e.Logger.Fatal(err)
 	}
 
-	client, err := k8s.NewClient(config)
+	client, err := k8s.NewClientForConfig(config)
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
