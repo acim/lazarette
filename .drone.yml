@@ -11,6 +11,9 @@ steps:
       - golint ./...
       - golangci-lint run --skip-dirs frontend --timeout 60m --enable-all
       - spaghetti-cutter
+    volumes:
+      - name: go-pkg-mod
+        path: /go/pkg/mod
   - name: lint-svelte
     image: mhart/alpine-node:14
     commands:
