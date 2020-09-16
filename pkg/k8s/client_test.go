@@ -29,18 +29,15 @@ func TestStorageClasses(t *testing.T) {
 
 	scs, _ := c.StorageClasses(context.Background())
 
-	l := len(scs)
-	if len(scs) != 2 {
+	if l := len(scs); l != 2 {
 		t.Fatalf("expected 2 storage classes, got %d", l)
 	}
 
-	n0 := scs[0].ObjectMeta.Name
-	if n0 != "hcloud-volumes" {
+	if n0 := scs[0].ObjectMeta.Name; n0 != "hcloud-volumes" {
 		t.Fatalf("expected name hcloud-volumes for storage classes 0, got %s", n0)
 	}
 
-	n1 := scs[1].ObjectMeta.Name
-	if n1 != "nfs" {
+	if n1 := scs[1].ObjectMeta.Name; n1 != "nfs" {
 		t.Fatalf("expected name nfs for storage classes 1, got %s", n1)
 	}
 
