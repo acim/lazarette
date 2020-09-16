@@ -23,6 +23,9 @@ steps:
     image: golang:1-alpine
     commands:
       - CGO_ENABLED=0 go test -json -coverprofile=coverage.out $(go list ./... | grep -v /frontend/) >tests.json
+    volumes:
+      - name: go-pkg-mod
+        path: /go/pkg/mod
   - name: tag
     image: busybox
     commands:
@@ -62,3 +65,8 @@ steps:
   #       - master
   #     event:
   #       - push
+
+volumes:
+  - name: go-pkg-mod
+    host:
+      path: /tmp/cache/${DRONE_REPO}/go
