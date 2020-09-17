@@ -1,5 +1,5 @@
 <script lang="ts">
-  import store from "../toastStore";
+  import store from "../toastStore"
 </script>
 
 <style>

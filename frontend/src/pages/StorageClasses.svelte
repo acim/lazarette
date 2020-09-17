@@ -1,25 +1,25 @@
 <script lang="ts">
-  import Nav from "../components/Nav.svelte";
-  import StorageClass from "../components/StorageClass.svelte";
-  import Toast from "../components/Toast.svelte";
-  import store from "../storageClassesStore";
-  import type crayon from "crayon";
-  import { mdiLoading } from "@mdi/js";
-  import { onMount } from "svelte";
+  import Nav from "../components/Nav.svelte"
+  import StorageClass from "../components/StorageClass.svelte"
+  import Toast from "../components/Toast.svelte"
+  import store from "../storageClassesStore"
+  import type crayon from "crayon"
+  import { mdiLoading } from "@mdi/js"
+  import { onMount } from "svelte"
 
-  export let nav: crayon.Router;
+  export let nav: crayon.Router
 
-  let error: string;
-  let loading = true;
+  let error: string
+  let loading = true
 
   onMount(() => {
     try {
-      store.load();
+      store.load()
     } catch (err) {
-      error = err;
+      error = err
     }
-    loading = false;
-  });
+    loading = false
+  })
 </script>
 
 <Nav {nav} />

@@ -1,21 +1,21 @@
 <script lang="ts">
-  import store from "../storageClassesStore";
-  import toast from "../toastStore";
-  import { fade } from "svelte/transition";
+  import store from "../storageClassesStore"
+  import toast from "../toastStore"
+  import { fade } from "svelte/transition"
 
-  export let i: number;
+  export let i: number
 
   const setDefault = () => {
     try {
-      const name = $store[i].metadata.name;
-      store.setDefault(name);
-      toast.set({ message: `Default storage class set to ${name}` });
+      const name = $store[i].metadata.name
+      store.setDefault(name)
+      toast.set({ message: `Default storage class set to ${name}` })
     } catch (err) {
-      toast.set({ message: (err as Error).message });
+      toast.set({ message: (err as Error).message })
     }
-  };
+  }
 
-  let isDefault: () => boolean;
+  let isDefault: () => boolean
   $: isDefault = () => {
     return (
       $store[i].metadata.annotations.hasOwnProperty(
@@ -24,8 +24,8 @@
       $store[i].metadata.annotations[
         "storageclass.kubernetes.io/is-default-class"
       ] === "true"
-    );
-  };
+    )
+  }
 </script>
 
 <style>
@@ -61,7 +61,7 @@
     <div class="right">
       <button
         on:click|once={() => {
-          setDefault();
+          setDefault()
         }}>
         Set to default
       </button>

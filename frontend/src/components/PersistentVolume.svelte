@@ -1,23 +1,23 @@
 <script lang="ts">
-  import store from "../persistentVolumesStore";
-  import toast from "../toastStore";
-  import { fade } from "svelte/transition";
+  import store from "../persistentVolumesStore"
+  import toast from "../toastStore"
+  import { fade } from "svelte/transition"
 
-  export let i: number;
+  export let i: number
 
   const toggleReclaimPolicy = () => {
     try {
-      const name = $store[i].volume.metadata.name;
-      let policy = "Retain";
+      const name = $store[i].volume.metadata.name
+      let policy = "Retain"
       if ($store[i].volume.spec.persistentVolumeReclaimPolicy === "Retain") {
-        policy = "Delete";
+        policy = "Delete"
       }
-      store.toggleReclaimPolicy(name, policy);
-      toast.set({ message: `Reclaim policy set to ${policy.toLowerCase()}` });
+      store.toggleReclaimPolicy(name, policy)
+      toast.set({ message: `Reclaim policy set to ${policy.toLowerCase()}` })
     } catch (err) {
-      toast.set({ message: (err as Error).message });
+      toast.set({ message: (err as Error).message })
     }
-  };
+  }
 </script>
 
 <style>
@@ -98,14 +98,14 @@
     {#if $store[i].volume.spec.hasOwnProperty('claimRef') && !$store[i].volume.hasOwnProperty('claim')}
       <button
         on:click={() => {
-          alert('Not implemented');
+          alert('Not implemented')
         }}>
         Remove orphan claim
       </button>
     {:else}
       <button
         on:click={() => {
-          toggleReclaimPolicy();
+          toggleReclaimPolicy()
         }}>
         Toggle reclaim policy
       </button>

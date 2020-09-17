@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type crayon from "crayon";
-  import { mdiHexagonMultiple, mdiNas } from "@mdi/js";
+  import type crayon from "crayon"
+  import { mdiHexagonMultiple, mdiNas } from "@mdi/js"
 
-  export let nav: crayon.Router;
+  export let nav: crayon.Router
 </script>
 
 <style>
