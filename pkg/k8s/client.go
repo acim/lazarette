@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	corev1 "k8s.io/api/core/v1"
-	v1 "k8s.io/api/storage/v1"
+	v1 "k8s.io/api/core/v1"
+	storagev1 "k8s.io/api/storage/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/kubernetes"
@@ -34,7 +34,7 @@ func NewClient(cs kubernetes.Interface) (*Client, error) {
 }
 
 // StorageClasses returns all storage classes in the cluster.
-func (c *Client) StorageClasses(ctx context.Context) ([]v1.StorageClass, error) {
+func (c *Client) StorageClasses(ctx context.Context) ([]storagev1.StorageClass, error) {
 	scl, err := c.Interface.StorageV1().StorageClasses().List(ctx, metav1.ListOptions{})
 	if err != nil {
 		return nil, err
@@ -76,7 +76,7 @@ func (c *Client) PersistentVolumesWithClaimsAndPods(ctx context.Context) ([]Volu
 				pvc.ManagedFields = nil
 				volumes[i].PersistentVolumeClaim = pvc
 
-				volumes[i].Pods = make([]corev1.Pod, 0)
+				volumes[i].Pods = make([]v1.Pod, 0)
 
 				for _, pod := range pl.Items {
 					for _, v := range pod.Spec.Volumes {
@@ -125,7 +125,7 @@ func (c *Client) SetDefaultStorageClass(ctx context.Context, storageClassName st
 		return err
 	}
 
-	path := fmt.Sprintf("/metadata/annotations/%s", jsonPointerEscape("storageclass.kubernetes.io/is-default-class"))
+	path := fmt.Sprintf("/metadata/annotations/%s", EscapeJSONPointer("storageclass.kubernetes.io/is-default-class"))
 
 	for _, item := range scl.Items {
 		var p []patchStringValue
@@ -165,9 +165,9 @@ func (c *Client) SetDefaultStorageClass(ctx context.Context, storageClassName st
 
 // VolumeClaimPods represents a persistent volume together with belonging claim and pods.
 type VolumeClaimPods struct {
-	PersistentVolume      corev1.PersistentVolume      `json:"volume"`
-	PersistentVolumeClaim corev1.PersistentVolumeClaim `json:"claim"`
-	Pods                  []corev1.Pod                 `json:"pods"`
+	PersistentVolume      v1.PersistentVolume      `json:"volume"`
+	PersistentVolumeClaim v1.PersistentVolumeClaim `json:"claim"`
+	Pods                  []v1.Pod                 `json:"pods"`
 }
 
 type patchStringValue struct {
