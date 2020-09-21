@@ -1,4 +1,4 @@
-name: lazarette
+name: build
 
 on:
   push:

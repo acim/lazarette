@@ -1,6 +1,6 @@
 # lazarette - Kubernetes Volumes Explorer
 
-[![Build Status](https://drone.ablab.io/api/badges/acim/lazarette/status.svg)](https://drone.ablab.io/acim/lazarette)
+![Build Status](https://github.com/acim/lazarette/workflows/build/badge.svg)
 [![Go Report](https://goreportcard.com/badge/github.com/acim/lazarette)](https://goreportcard.com/report/github.com/acim/lazarette)
 [![Docker Image Size](https://img.shields.io/docker/image-size/ablab/lazarette)](https://hub.docker.com/repository/docker/ablab/lazarette)
 [![Docker Pulls](https://img.shields.io/docker/pulls/ablab/lazarette)](https://hub.docker.com/repository/docker/ablab/lazarette)
