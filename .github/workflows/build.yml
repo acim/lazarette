@@ -76,12 +76,15 @@ jobs:
       - name: Check out
         uses: actions/checkout@v2
 
-      - name: Build and push image
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push image to DockerHub
         uses: docker/build-push-action@v2
         with:
-          repository: ablab/lazarette
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          add_git_labels: true
-          tag_with_ref: true
-          tag_with_sha: true
+          push: true
+          tags: |
+            ablab/lazarette:latest
