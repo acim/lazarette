@@ -79,7 +79,7 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v1.1.1
         with:
-          repository: bluegosolutions/bg-solution-kube/deployment
+          repository: ablab/lazarette
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           add_git_labels: true
