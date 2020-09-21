@@ -5,8 +5,8 @@ on:
   pull_request:
 
 jobs:
-  lazarette:
-    name: go
+  go-checks:
+    name: go-lint-test
     runs-on: ubuntu-latest
     steps:
       - name: set up go
@@ -41,3 +41,29 @@ jobs:
 
       - name: test
         run: go test -race -json -coverprofile=coverage.out $(go list ./... | grep -v /frontend/) >tests.json
+
+  svelte-checks:
+    name: svelte-lint-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: set up node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: set up cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: check out
+        uses: actions/checkout@v2
+
+      - name: validate
+        run: |
+          cd frontend
+          npm ci
+          npm run validate
