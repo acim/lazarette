@@ -6,16 +6,16 @@ on:
 
 jobs:
   go-checks:
-    name: go-lint-test
+    name: go-checks
     runs-on: ubuntu-latest
     steps:
-      - name: set up go
+      - name: Set up go
         uses: actions/setup-go@v2
         with:
           go-version: ^1.15
         id: go
 
-      - name: set up cache
+      - name: Set up cache
         uses: actions/cache@v2
         with:
           path: ~/go/pkg/mod
@@ -23,35 +23,35 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
-      - name: set up linters
+      - name: Set up linters
         run: |
           GO111MODULE=on go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
           go get -u golang.org/x/lint/golint
           go get -u github.com/flowdev/spaghetti-cutter
 
-      - name: check out
+      - name: Check out
         uses: actions/checkout@v2
 
-      - name: lint
+      - name: Lint
         run: |
           go vet ./...
           golint -set_exit_status ./...
           golangci-lint run --skip-dirs frontend --timeout 60m --enable-all
           spaghetti-cutter
 
-      - name: test
+      - name: Test
         run: go test -race -json -coverprofile=coverage.out $(go list ./... | grep -v /frontend/) >tests.json
 
   svelte-checks:
-    name: svelte-lint-test
+    name: svelte-checks
     runs-on: ubuntu-latest
     steps:
-      - name: set up node
+      - name: Set up node
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
 
-      - name: set up cache
+      - name: Set up cache
         uses: actions/cache@v2
         with:
           path: ~/.npm
@@ -59,11 +59,29 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: check out
+      - name: Check out
         uses: actions/checkout@v2
 
-      - name: validate
+      - name: Validate
         run: |
           cd frontend
           npm ci
           npm run validate
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    needs: [go-checks, svelte-checks]
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+
+      - name: Build and push image
+        uses: docker/build-push-action@v1.1.1
+        with:
+          repository: bluegosolutions/bg-solution-kube/deployment
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          add_git_labels: true
+          tag_with_ref: true
+          tag_with_sha: true
