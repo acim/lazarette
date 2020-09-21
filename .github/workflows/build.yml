@@ -77,7 +77,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build and push image
-        uses: docker/build-push-action@v1.1.1
+        uses: docker/build-push-action@v2
         with:
           repository: ablab/lazarette
           username: ${{ secrets.DOCKERHUB_USERNAME }}
