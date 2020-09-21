@@ -32,4 +32,4 @@ jobs:
           spaghetti-cutter
 
       - name: test
-        run: CGO_ENABLED=0 go test -race -json -coverprofile=coverage.out $(go list ./... | grep -v /frontend/) >tests.json
+        run: go test -race -json -coverprofile=coverage.out $(go list ./... | grep -v /frontend/) >tests.json
