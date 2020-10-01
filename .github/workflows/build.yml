@@ -25,7 +25,7 @@ jobs:
 
       - name: Set up linters
         run: |
-          GO111MODULE=on go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+          GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.31.0
           go get -u golang.org/x/lint/golint
           go get -u github.com/flowdev/spaghetti-cutter
 
