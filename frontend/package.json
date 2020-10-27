@@ -12,7 +12,7 @@
     "@mdi/js": "^5.8.55",
     "@rollup/plugin-commonjs": "^15.1.0",
     "@rollup/plugin-node-resolve": "^10.0.0",
-    "@rollup/plugin-typescript": "^6.0.0",
+    "@rollup/plugin-typescript": "^6.1.0",
     "@tsconfig/svelte": "^1.0.10",
     "crayon": "^6.0.1",
     "crayon-animate": "^6.0.0",
