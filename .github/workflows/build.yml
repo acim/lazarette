@@ -27,7 +27,6 @@ jobs:
         run: |
           GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.31.0
           go get -u golang.org/x/lint/golint
-          go get -u github.com/flowdev/spaghetti-cutter
 
       - name: Check out
         uses: actions/checkout@v2
@@ -37,7 +36,6 @@ jobs:
           go vet ./...
           golint -set_exit_status ./...
           golangci-lint run --skip-dirs frontend --timeout 60m --enable-all
-          spaghetti-cutter
 
       - name: Test
         run: go test -race -json -coverprofile=coverage.out $(go list ./... | grep -v /frontend/) >tests.json
