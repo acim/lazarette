@@ -7,7 +7,7 @@ RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags="-s -w" -o /go/bin/lazarette
 
-FROM mhart/alpine-node:15.2.0 AS svelte-builder
+FROM mhart/alpine-node:15.2.1 AS svelte-builder
 
 WORKDIR /app
 COPY frontend ./
