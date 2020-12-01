@@ -11,7 +11,7 @@
     "@kubernetes/client-node": "^0.13.0",
     "@mdi/js": "^5.8.55",
     "@rollup/plugin-commonjs": "^17.0.0",
-    "@rollup/plugin-node-resolve": "^10.0.0",
+    "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-typescript": "^8.0.0",
     "@tsconfig/svelte": "^1.0.10",
     "crayon": "^6.0.1",
