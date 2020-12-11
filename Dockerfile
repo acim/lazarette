@@ -13,7 +13,7 @@ WORKDIR /app
 COPY frontend ./
 RUN npm ci && npm run build
 
-FROM alpine:3.12.1
+FROM alpine:3.12.2
 
 LABEL org.label-schema.description="Kubernetes Volumes Explorer" \
     org.label-schema.name="lazarette" \
