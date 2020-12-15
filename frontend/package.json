@@ -18,7 +18,7 @@
     "crayon-animate": "^6.0.0",
     "crayon-svelte": "^6.0.0",
     "crayon-transition": "^6.0.0",
-    "rollup": "^2.35.0",
+    "rollup": "^2.35.1",
     "rollup-plugin-css-only": "^3.0.0",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.0.0",
