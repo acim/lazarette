@@ -1,13 +1,9 @@
 <script lang="ts">
-  import Nav from "../components/Nav.svelte"
-  import StorageClass from "../components/StorageClass.svelte"
-  import Toast from "../components/Toast.svelte"
-  import store from "../storageClassesStore"
-  import type crayon from "crayon"
-  import { mdiLoading } from "@mdi/js"
-  import { onMount } from "svelte"
-
-  export let nav: crayon.Router
+  import StorageClass from '../components/StorageClass.svelte'
+  import Toast from '../components/Toast.svelte'
+  import store from '../storageClassesStore'
+  import { mdiLoading } from '@mdi/js'
+  import { onMount } from 'svelte'
 
   let error: string
   let loading = true
@@ -22,13 +18,12 @@
   })
 </script>
 
-<Nav {nav} />
-
 <div class="container">
   {#if loading}
     <svg viewBox="0 0 24 24">
       <path d={mdiLoading} />
-    </svg> Volumes
+    </svg>
+    Volumes
   {/if}
   {#each $store as item, i (item.metadata.uid)}
     <StorageClass {i} />

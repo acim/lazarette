@@ -1,8 +1,6 @@
 <script lang="ts">
-  import type crayon from "crayon"
-  import { mdiHexagonMultiple, mdiNas } from "@mdi/js"
-
-  export let nav: crayon.Router
+  import { mdiHexagonMultiple, mdiNas } from '@mdi/js'
+  import { Link } from '@bjornlu/svelte-router'
 </script>
 
 <style>
@@ -51,14 +49,16 @@
 </style>
 
 <nav>
-  <a href="." on:click|preventDefault={() => nav.navigate('/volumes')}>
+  <Link to="/">
     <svg viewBox="0 0 24 24">
       <path d={mdiNas} />
-    </svg> Volumes
-  </a>
-  <a href="." on:click|preventDefault={() => nav.navigate('/classes')}>
+    </svg>
+    Volumes
+  </Link>
+  <Link to="/classes">
     <svg viewBox="0 0 24 24">
       <path d={mdiHexagonMultiple} />
-    </svg> Storage Classes
-  </a>
+    </svg>
+    Storage Classes
+  </Link>
 </nav>
