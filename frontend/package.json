@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@kubernetes/client-node": "^0.13.2",
-    "@mdi/js": "^5.8.55",
+    "@mdi/js": "^5.9.55",
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.1",
     "@rollup/plugin-typescript": "^8.1.0",
