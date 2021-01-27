@@ -1,16 +1,16 @@
 <script lang="ts">
-  import store from "../persistentVolumesStore"
-  import toast from "../toastStore"
-  import { fade } from "svelte/transition"
+  import store from '../persistentVolumesStore'
+  import toast from '../toastStore'
+  import { fade } from 'svelte/transition'
 
   export let i: number
 
   const toggleReclaimPolicy = () => {
     try {
       const name = $store[i].volume.metadata.name
-      let policy = "Retain"
-      if ($store[i].volume.spec.persistentVolumeReclaimPolicy === "Retain") {
-        policy = "Delete"
+      let policy = 'Retain'
+      if ($store[i].volume.spec.persistentVolumeReclaimPolicy === 'Retain') {
+        policy = 'Delete'
       }
       store.toggleReclaimPolicy(name, policy)
       toast.set({ message: `Reclaim policy set to ${policy.toLowerCase()}` })
@@ -20,13 +20,7 @@
   }
 </script>
 
-<style>
-  h3 {
-    color: var(--color-accent);
-  }
-</style>
-
-<section transition:fade>
+<section transition:fade={{ delay: 0, duration: 400 }}>
   <h3>{$store[i].volume.metadata.name}</h3>
   <table>
     <tr>
@@ -57,7 +51,8 @@
       <tr>
         <td>Referencing claim name</td>
         <td>
-          {$store[i].volume.spec.claimRef.namespace}/{$store[i].volume.spec.claimRef.name}
+          {$store[i].volume.spec.claimRef.namespace}/{$store[i].volume.spec
+            .claimRef.name}
         </td>
       </tr>
     {/if}
@@ -99,16 +94,24 @@
       <button
         on:click={() => {
           alert('Not implemented')
-        }}>
+        }}
+      >
         Remove orphan claim
       </button>
     {:else}
       <button
         on:click={() => {
           toggleReclaimPolicy()
-        }}>
+        }}
+      >
         Toggle reclaim policy
       </button>
     {/if}
   </div>
 </section>
+
+<style>
+  h3 {
+    color: var(--color-accent);
+  }
+</style>
