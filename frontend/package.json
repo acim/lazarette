@@ -27,6 +27,6 @@
   },
   "dependencies": {
     "@bjornlu/svelte-router": "^0.4.1",
-    "sirv-cli": "^1.0.10"
+    "sirv-cli": "^1.0.11"
   }
 }
