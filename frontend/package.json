@@ -10,7 +10,7 @@
   "devDependencies": {
     "@kubernetes/client-node": "^0.13.2",
     "@mdi/js": "^5.9.55",
-    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-node-resolve": "^11.1.0",
     "@rollup/plugin-typescript": "^8.1.0",
     "@tsconfig/svelte": "^1.0.10",
