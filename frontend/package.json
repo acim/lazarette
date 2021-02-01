@@ -12,7 +12,7 @@
     "@mdi/js": "^5.9.55",
     "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-node-resolve": "^11.1.0",
-    "@rollup/plugin-typescript": "^8.1.0",
+    "@rollup/plugin-typescript": "^8.1.1",
     "@tsconfig/svelte": "^1.0.10",
     "rollup": "^2.38.3",
     "rollup-plugin-css-only": "^3.1.0",
