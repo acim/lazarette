@@ -1,4 +1,4 @@
-FROM golang:1.15.7-buster
+FROM golang:1.15.8-buster
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
     apt-get install -y nodejs
