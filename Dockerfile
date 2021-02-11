@@ -1,4 +1,4 @@
-FROM golang:1.15.6-alpine AS go-builder
+FROM golang:1.15.8-alpine AS go-builder
 
 WORKDIR /app
 COPY go.mod go.sum ./
@@ -7,13 +7,13 @@ RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags="-s -w" -o /go/bin/lazarette
 
-FROM mhart/alpine-node:15.5.1 AS svelte-builder
+FROM mhart/alpine-node:15.8.0 AS svelte-builder
 
 WORKDIR /app
 COPY frontend ./
 RUN npm ci && npm run build
 
-FROM alpine:3.12.3
+FROM alpine:3.13.1
 
 LABEL org.label-schema.description="Kubernetes Volumes Explorer" \
     org.label-schema.name="lazarette" \

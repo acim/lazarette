@@ -1,7 +1,7 @@
 <script lang="ts">
-  import store from "../storageClassesStore"
-  import toast from "../toastStore"
-  import { fade } from "svelte/transition"
+  import store from '../storageClassesStore'
+  import toast from '../toastStore'
+  import { fade } from 'svelte/transition'
 
   export let i: number
 
@@ -19,22 +19,19 @@
   $: isDefault = () => {
     return (
       $store[i].metadata.annotations.hasOwnProperty(
-        "storageclass.kubernetes.io/is-default-class"
+        'storageclass.kubernetes.io/is-default-class'
       ) &&
       $store[i].metadata.annotations[
-        "storageclass.kubernetes.io/is-default-class"
-      ] === "true"
+        'storageclass.kubernetes.io/is-default-class'
+      ] === 'true'
     )
   }
 </script>
 
-<style>
-  h3 {
-    color: var(--color-accent);
-  }
-</style>
-
-<section class:position-relative={isDefault()} transition:fade>
+<section
+  class:position-relative={isDefault()}
+  transition:fade={{ delay: 0, duration: 400 }}
+>
   <h3>{$store[i].metadata.name}</h3>
   {#if isDefault()}
     <tag>default</tag>
@@ -62,9 +59,16 @@
       <button
         on:click|once={() => {
           setDefault()
-        }}>
+        }}
+      >
         Set to default
       </button>
     </div>
   {/if}
 </section>
+
+<style>
+  h3 {
+    color: var(--color-accent);
+  }
+</style>
