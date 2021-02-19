@@ -8,7 +8,7 @@
     "validate": "svelte-check"
   },
   "devDependencies": {
-    "@kubernetes/client-node": "^0.13.2",
+    "@kubernetes/client-node": "^0.14.0",
     "@mdi/js": "^5.9.55",
     "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-node-resolve": "^11.1.1",
